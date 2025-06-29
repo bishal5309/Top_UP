@@ -22,7 +22,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:cardElevation="4dp"
-            app:cardCornerRadius="0dp"
+            app:cardCornerRadius="15dp"
             app:cardBackgroundColor="@android:color/transparent">
             <FrameLayout
                 android:layout_width="match_parent"
@@ -33,6 +33,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
+
+
 
 
                     <LinearLayout
@@ -58,6 +60,36 @@
                             android:textSize="20sp"
                             android:textStyle="bold"
                             android:textColor="@color/black" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_marginTop="25dp"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginRight="16dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:weightSum="1">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:textStyle="bold"
+                            android:textSize="16sp"
+                            android:textColor="#ACACAC"
+                            android:text="EPOS: 1288871"
+                            android:layout_weight="0.5" />
+
+                        <TextView
+                            android:textColor="#ACACAC"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:textStyle="bold"
+                            android:textSize="16sp"
+                            android:text="Limit"
+                            android:gravity="end"
+                            android:layout_weight="0.5" />
+
                     </LinearLayout>
 
                     <!-- Content Area (Your cards and info go here) -->
@@ -140,20 +172,8 @@
                 </LinearLayout>
 
 
-
-
-
-
-
             </FrameLayout>
         </androidx.cardview.widget.CardView>
-
-
-
-
-
-
-
 
 
         <LinearLayout
@@ -166,29 +186,32 @@
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btn_top_up"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="70dp"
                 android:layout_weight="1"
                 android:background="@drawable/rounded_button_green"
-                android:text="Top up account"
+                android:text="Topup account"
                 android:textColor="@android:color/white"
                 android:drawableLeft="@drawable/cashin"
-                android:padding="12dp"/>
+                android:padding="12dp"
+                android:textAllCaps="false" />
 
             <View
-                android:layout_width="8dp"
+                android:layout_width="10dp"
                 android:layout_height="match_parent" />
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btn_withdraw"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="70dp"
                 android:layout_weight="1"
                 android:background="@drawable/rounded_button_blue"
                 android:text="Withdraw funds"
                 android:textColor="@android:color/white"
                 android:drawableLeft="@drawable/cashout"
-                android:padding="12dp"/>
+                android:padding="12dp"
+                android:textAllCaps="false" />
         </LinearLayout>
+
 
         <androidx.cardview.widget.CardView
             android:id="@+id/exit"

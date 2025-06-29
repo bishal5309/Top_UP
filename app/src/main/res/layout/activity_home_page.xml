@@ -8,6 +8,9 @@
     android:layout_height="match_parent"
     tools:context=".home_page">
 
+
+
+
     <!-- Main content -->
     <LinearLayout
         android:id="@+id/main"
@@ -34,9 +37,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
-
-
-
 
                     <LinearLayout
                         android:layout_marginTop="35dp"
@@ -268,6 +268,37 @@
 
         </androidx.cardview.widget.CardView>
 
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <!-- Bottom Curved FrameLayout -->
+            <FrameLayout
+                android:id="@+id/bottomCurved"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:background="@drawable/card_top_rounded"
+                android:elevation="8dp">
+
+                <TextView
+                    android:layout_margin="10dp"
+                    android:id="@+id/tvBalance"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Balance: 19,202.27 ৳"
+                    android:textColor="#746F6F"
+                    android:textSize="16sp"
+                    />
+            </FrameLayout>
+
+        </RelativeLayout>
+
+
+
+
+
+
     </LinearLayout>
 
     <!-- Navigation Drawer Menu -->
@@ -281,6 +312,7 @@
         app:itemTextColor="@color/nav_item_color"
         app:itemIconTint="@color/nav_item_color"
         />
+
 
 
 </androidx.drawerlayout.widget.DrawerLayout>

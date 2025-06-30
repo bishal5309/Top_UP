@@ -125,7 +125,7 @@
                                         android:layout_height="48dp"
                                         android:background="@android:color/transparent"
                                         android:src="@drawable/refresh"
-                                        android:contentDescription="Refresh" />
+                                        android:contentDescription="Refresh"/>
                                 </androidx.cardview.widget.CardView>
 
                                 <LinearLayout
@@ -279,7 +279,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
                 android:background="@drawable/card_top_rounded"
-                android:elevation="8dp">
+                android:elevation="12dp">
 
                 <TextView
                     android:layout_margin="10dp"

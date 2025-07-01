@@ -5,10 +5,14 @@
     <color name="myblue">#2196F3</color> <!-- Material Blue -->
 
     <color name="my_blue">#205080</color>
-    <color name="purple_700">#3700B3</color>
+    <color name="purple_700">#253E52</color>
     <color name="background">?android:colorBackground</color>
     <color name="textPrimary">?android:textColor</color>
     <color name="cardBackground">?colorSurface</color>
+
+    <!-- res/values/colors.xml -->
+    <color name="blue_500">#2979FF</color>
+    <color name="gray_400">#BDBDBD</color>
 
 
 </resources>

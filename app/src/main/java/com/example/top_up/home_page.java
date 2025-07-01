@@ -2,6 +2,7 @@ package com.example.top_up;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -17,7 +18,9 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SwitchCompat;
 import androidx.cardview.widget.CardView;
+import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
@@ -114,6 +117,51 @@ public class home_page extends AppCompatActivity implements NavigationView.OnNav
 
         // Activity চালুর সময় drawer menu তে home সিলেক্টেড দেখাবে
         navigationView.setCheckedItem(R.id.nav_home);
+        navigationView.post(() -> {
+            MenuItem darkItem = navigationView.getMenu().findItem(R.id.nav_dark);
+            View switchLayout = getLayoutInflater().inflate(R.layout.switch_item_layout, null);
+            SwitchCompat themeSwitch = switchLayout.findViewById(R.id.theme_switch);
+
+            // Optional: Restore theme state
+            themeSwitch.setChecked(false); // Or load from SharedPreferences
+
+            // On/Off logic
+            themeSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
+                if (isChecked) {
+                    // Set dark theme (apply logic here)
+                } else {
+                    // Set light theme
+                }
+            });
+
+            darkItem.setActionView(switchLayout);
+
+            ColorStateList trackColor = new ColorStateList(
+                    new int[][] {
+                            new int[] { android.R.attr.state_checked },
+                            new int[] { -android.R.attr.state_checked }
+                    },
+                    new int[] {
+                            ContextCompat.getColor(this, R.color.blue_500),  // ON
+                            ContextCompat.getColor(this, R.color.gray_400)   // OFF
+                    }
+            );
+
+            ColorStateList thumbColor = new ColorStateList(
+                    new int[][] {
+                            new int[] { android.R.attr.state_checked },
+                            new int[] { -android.R.attr.state_checked }
+                    },
+                    new int[] {
+                            ContextCompat.getColor(this, R.color.white),     // ON
+                            ContextCompat.getColor(this, R.color.white)      // OFF
+                    }
+            );
+
+            themeSwitch.setThumbTintList(thumbColor);
+            themeSwitch.setTrackTintList(trackColor);
+        });
+
     }
 
     @Override
@@ -127,11 +175,6 @@ public class home_page extends AppCompatActivity implements NavigationView.OnNav
             navigationView.setCheckedItem(R.id.nav_profile);
             // এখানে প্রোফাইল লোড করার কোড দিবে, উদাহরণ:
             // startActivity(new Intent(this, ProfileActivity.class));
-        } else if (id == R.id.nav_logout) {
-
-            Intent intent = new Intent(home_page.this,MainActivity.class);
-            finish();
-
         }
 
         drawerLayout.closeDrawer(GravityCompat.START);

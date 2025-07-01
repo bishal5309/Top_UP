@@ -11,5 +11,10 @@
         <!-- EditText, Buttons, etc -->
         <item name="colorControlNormal">#205080</item>
         <item name="android:textColor">#000000</item>
+
+        <!-- In res/values/themes.xml -->
+        <item name="color">@color/blue_500</item>
+        <item name="colorControlActivated">@color/blue_500</item> <!-- Active switch color -->
+
     </style>
 </resources>

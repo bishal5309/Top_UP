@@ -291,14 +291,7 @@
                     android:textSize="16sp"
                     />
             </FrameLayout>
-
         </RelativeLayout>
-
-
-
-
-
-
     </LinearLayout>
 
     <!-- Navigation Drawer Menu -->

@@ -1,26 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="160dp"
+    android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:padding="16dp"
     android:background="@color/purple_700"
-    android:gravity="bottom">
-
-    <ImageView
-        android:layout_width="64dp"
-        android:layout_height="64dp"
-
-        android:padding="8dp"
-        android:layout_marginBottom="8dp" />
-    <!-- android:src="@drawable/ic_person"
-        android:background="@drawable/circle_background"-->
+    >
     <TextView
+        android:layout_marginTop="50dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginBottom="10dp"
         android:id="@+id/tvUsername"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Welcome!"
-        android:textColor="@android:color/white"
-        android:textSize="18sp"
-        android:textStyle="bold" />
+        android:text="MOBCASH"
+        android:textColor="#4797DD"
+        android:textSize="50sp"
+         />
 </LinearLayout>

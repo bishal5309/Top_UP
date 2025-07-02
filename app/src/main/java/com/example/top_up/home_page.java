@@ -1,7 +1,7 @@
 package com.example.top_up;
 
 import android.content.DialogInterface;
-import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.view.Menu;
@@ -67,7 +67,6 @@ public class home_page extends AppCompatActivity implements NavigationView.OnNav
 
             @Override
             public void onDrawerOpened(@NonNull View drawerView) {
-                // drawer খুললে home আইটেম সিলেক্টেড থাকবে
                 Menu menu = navigationView.getMenu();
                 MenuItem homeItem = menu.findItem(R.id.nav_home);
                 if (homeItem != null) {
@@ -115,53 +114,56 @@ public class home_page extends AppCompatActivity implements NavigationView.OnNav
                 .setNegativeButton("No", null)
                 .show());
 
-        // Activity চালুর সময় drawer menu তে home সিলেক্টেড দেখাবে
+        // Drawer menu তে home সিলেক্টেড দেখাবে
         navigationView.setCheckedItem(R.id.nav_home);
+
         navigationView.post(() -> {
             MenuItem darkItem = navigationView.getMenu().findItem(R.id.nav_dark);
             View switchLayout = getLayoutInflater().inflate(R.layout.switch_item_layout, null);
             SwitchCompat themeSwitch = switchLayout.findViewById(R.id.theme_switch);
 
-            // Optional: Restore theme state
-            themeSwitch.setChecked(false); // Or load from SharedPreferences
+            // SharedPreferences init
+            SharedPreferences prefs = home_page.this.getSharedPreferences("theme_prefs", MODE_PRIVATE);
+            boolean savedState = prefs.getBoolean("is_dark_switch_on", false); // default OFF
+
+            // Restore previous state
+            themeSwitch.setChecked(savedState);
 
             // On/Off logic
             themeSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
-                if (isChecked) {
-                    // Set dark theme (apply logic here)
-                } else {
-                    // Set light theme
-                }
+                SharedPreferences.Editor editor = prefs.edit();
+                editor.putBoolean("is_dark_switch_on", isChecked);
+                editor.apply();
             });
 
             darkItem.setActionView(switchLayout);
 
+            // Optional styling
             ColorStateList trackColor = new ColorStateList(
-                    new int[][] {
-                            new int[] { android.R.attr.state_checked },
-                            new int[] { -android.R.attr.state_checked }
+                    new int[][]{
+                            new int[]{android.R.attr.state_checked},
+                            new int[]{-android.R.attr.state_checked}
                     },
-                    new int[] {
-                            ContextCompat.getColor(this, R.color.blue_500),  // ON
-                            ContextCompat.getColor(this, R.color.gray_400)   // OFF
+                    new int[]{
+                            ContextCompat.getColor(home_page.this, R.color.blue_500),
+                            ContextCompat.getColor(home_page.this, R.color.gray_400)
                     }
             );
 
             ColorStateList thumbColor = new ColorStateList(
-                    new int[][] {
-                            new int[] { android.R.attr.state_checked },
-                            new int[] { -android.R.attr.state_checked }
+                    new int[][]{
+                            new int[]{android.R.attr.state_checked},
+                            new int[]{-android.R.attr.state_checked}
                     },
-                    new int[] {
-                            ContextCompat.getColor(this, R.color.white),     // ON
-                            ContextCompat.getColor(this, R.color.white)      // OFF
+                    new int[]{
+                            ContextCompat.getColor(home_page.this, R.color.white),
+                            ContextCompat.getColor(home_page.this, R.color.white)
                     }
             );
 
             themeSwitch.setThumbTintList(thumbColor);
             themeSwitch.setTrackTintList(trackColor);
         });
-
     }
 
     @Override
@@ -169,11 +171,9 @@ public class home_page extends AppCompatActivity implements NavigationView.OnNav
         int id = item.getItemId();
 
         if (id == R.id.nav_home) {
-            // ইতিমধ্যে home এ আছো, drawer বন্ধ করো
             navigationView.setCheckedItem(R.id.nav_home);
         } else if (id == R.id.nav_profile) {
             navigationView.setCheckedItem(R.id.nav_profile);
-            // এখানে প্রোফাইল লোড করার কোড দিবে, উদাহরণ:
             // startActivity(new Intent(this, ProfileActivity.class));
         }
 

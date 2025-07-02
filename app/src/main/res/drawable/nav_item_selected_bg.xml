@@ -1,0 +1,14 @@
+<inset xmlns:android="http://schemas.android.com/apk/res/android"
+    android:insetRight="8dp"> <!-- right margin এর simulation -->
+
+    <shape android:shape="rectangle">
+        <solid android:color="#183350"/>
+        <corners
+            android:topRightRadius="50dp"
+            android:bottomRightRadius="50dp"
+            android:topLeftRadius="0dp"
+            android:bottomLeftRadius="0dp"/>
+        <size android:height="55dp"/>
+    </shape>
+
+</inset>

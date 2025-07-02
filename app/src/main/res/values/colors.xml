@@ -11,8 +11,10 @@
     <color name="cardBackground">?colorSurface</color>
 
     <!-- res/values/colors.xml -->
-    <color name="blue_500">#2979FF</color>
+    <color name="blue_500">#6395FE</color>
     <color name="gray_400">#BDBDBD</color>
+    <color name="nav_selected_bg">#DDEEFF</color>
+    <color name="gray_800">#424242</color> <!-- You can choose another shade too --><!-- Example light blue -->
 
 
 </resources>

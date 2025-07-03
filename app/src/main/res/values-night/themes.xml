@@ -12,5 +12,9 @@
         <!-- EditText, Buttons, etc -->
         <item name="colorControlNormal">#90CAF9</item>
         <item name="android:textColor">#FFFFFF</item>
+
+
+        <item name="cardBackgroundColor">#1E1E1E</item>
+
     </style>
 </resources>

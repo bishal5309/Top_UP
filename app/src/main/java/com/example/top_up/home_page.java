@@ -1,29 +1,41 @@
 package com.example.top_up;
 
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.SwitchCompat;
 import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.navigation.NavigationView;
 
 public class home_page extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -40,6 +52,7 @@ public class home_page extends AppCompatActivity implements NavigationView.OnNav
     private ImageView menuIcon;
 
     CardView exit;
+    AppCompatButton btn_top_up;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -164,6 +177,58 @@ public class home_page extends AppCompatActivity implements NavigationView.OnNav
             themeSwitch.setThumbTintList(thumbColor);
             themeSwitch.setTrackTintList(trackColor);
         });
+
+
+
+        //top up function code========================================================================
+
+        btn_top_up = findViewById(R.id.btn_top_up);
+        btn_top_up.setOnClickListener(view -> {
+            // Custom Dialog তৈরি করো
+            Dialog dialog = new Dialog(home_page.this);
+            View contentView = LayoutInflater.from(home_page.this).inflate(R.layout.layout_bottom_sheet, null);
+            dialog.setContentView(contentView);
+
+            // Window সেটিংস
+            Window window = dialog.getWindow();
+            if (window != null) {
+                window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                window.setGravity(Gravity.BOTTOM);
+                window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                window.getAttributes().windowAnimations = R.anim.dialog_animation;
+            }
+
+            // নিচে Access নিচ্ছি EditText আর Button
+            EditText edtUserId = contentView.findViewById(R.id.edit_user_id); // তোমার XML-এ EditText-এর ID এইভাবে দাও
+            MaterialButton btnSearch = contentView.findViewById(R.id.btn_search); // Button-এর ID
+
+            // Button Click Listener
+            btnSearch.setOnClickListener(v -> {
+                String userId = edtUserId.getText().toString().trim();
+
+                if (!userId.isEmpty()) {
+                    Toast.makeText(home_page.this, "Searching for: " + userId, Toast.LENGTH_SHORT).show();
+
+                    // এখানে তোমার API বা অন্য কাজ করতে পারো
+                    // ...
+
+                    dialog.dismiss(); // যদি চাই যে কাজ শেষে ডায়ালগ বন্ধ হবে
+                } else {
+                    edtUserId.setError("Please enter User ID");
+                }
+            });
+
+            dialog.show();
+        });
+
+
+
+
+
+
+
+
+
     }
 
     @Override

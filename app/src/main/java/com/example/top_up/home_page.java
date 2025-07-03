@@ -7,6 +7,7 @@ import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -19,6 +20,8 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -203,21 +206,40 @@ public class home_page extends AppCompatActivity implements NavigationView.OnNav
             MaterialButton btnSearch = contentView.findViewById(R.id.btn_search); // Button-এর ID
 
             // Button Click Listener
+            LinearLayout layoutLoadingArea = contentView.findViewById(R.id.layout_loading_area);
+            ProgressBar progressBar = contentView.findViewById(R.id.loading_spinner);
+            TextView loadingText = contentView.findViewById(R.id.loading_text);
+
             btnSearch.setOnClickListener(v -> {
                 String userId = edtUserId.getText().toString().trim();
 
                 if (!userId.isEmpty()) {
-                    Toast.makeText(home_page.this, "Searching for: " + userId, Toast.LENGTH_SHORT).show();
+                    btnSearch.setEnabled(false);
+                    btnSearch.setText("Loading...");
+                    layoutLoadingArea.setVisibility(View.VISIBLE); // Show spinner section
+                    btnSearch.setVisibility(View.GONE);
 
-                    // এখানে তোমার API বা অন্য কাজ করতে পারো
-                    // ...
+                    new Handler().postDelayed(() -> {
+                        if (userId.equals("123456789")) {
+                            Toast.makeText(home_page.this, "User Found: " + userId, Toast.LENGTH_SHORT).show();
+                            // Additional actions here
 
-                    dialog.dismiss(); // যদি চাই যে কাজ শেষে ডায়ালগ বন্ধ হবে
+
+
+                        } else {
+                            edtUserId.setError("Invalid User ID");
+                        }
+
+                        // Reset state
+                        layoutLoadingArea.setVisibility(View.GONE); // Hide loading
+                        btnSearch.setText("Search");
+                        btnSearch.setEnabled(true);
+                        btnSearch.setVisibility(View.VISIBLE);
+                    }, 2000);
                 } else {
                     edtUserId.setError("Please enter User ID");
                 }
             });
-
             dialog.show();
         });
 

@@ -3,7 +3,8 @@
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:background="@drawable/bg_bottom_sheet">
+    android:background="@drawable/bg_bottom_sheet"
+    android:paddingBottom="10dp">
 
     <!-- Top bar / handle -->
     <View
@@ -11,8 +12,7 @@
         android:layout_height="4dp"
         android:layout_gravity="center"
         android:background="#E7E7E7"
-        android:layout_marginTop="10dp"
-        />
+        android:layout_marginTop="10dp" />
 
     <TextView
         android:layout_gravity="center"
@@ -21,7 +21,7 @@
         android:textStyle="bold"
         android:layout_margin="15dp"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content" />
 
     <EditText
         android:inputType="number"
@@ -30,16 +30,53 @@
         android:layout_marginTop="20dp"
         android:hint="User ID"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content" />
 
+    <!-- Search Button -->
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_search"
-        android:layout_margin="15dp"
         android:layout_width="match_parent"
         android:layout_height="60dp"
+        android:layout_margin="15dp"
         android:text="Search"
+        android:textSize="16sp"
+        android:textAlignment="center"
         app:cornerRadius="12dp"
+        android:textAllCaps="false"
         android:textColor="?android:attr/textColorPrimaryInverse"
-        android:backgroundTint="?attr/colorPrimary"/>
+        android:backgroundTint="?attr/colorPrimary" />
+
+    <!-- Hidden Loading Container -->
+    <LinearLayout
+        android:id="@+id/layout_loading_area"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:visibility="gone"
+        android:background="@drawable/bg_loading_area"
+        android:layout_margin="15dp"
+       >
+
+    <ProgressBar
+        android:layout_marginStart="10dp"
+        android:id="@+id/loading_spinner"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:indeterminateTint="#888888"
+        android:indeterminate="true"
+        style="?android:attr/progressBarStyleSmall"
+        />
+
+    <TextView
+        android:layout_marginEnd="30dp"
+        android:textAlignment="center"
+        android:id="@+id/loading_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Loading..."
+        android:textSize="16sp"
+        android:textColor="#898989" />
+</LinearLayout>
 
 </LinearLayout>

@@ -184,15 +184,12 @@ public class home_page extends AppCompatActivity implements NavigationView.OnNav
 
 
         //top up function code========================================================================
-
         btn_top_up = findViewById(R.id.btn_top_up);
         btn_top_up.setOnClickListener(view -> {
-            // Custom Dialog তৈরি করো
             Dialog dialog = new Dialog(home_page.this);
             View contentView = LayoutInflater.from(home_page.this).inflate(R.layout.layout_bottom_sheet, null);
             dialog.setContentView(contentView);
 
-            // Window সেটিংস
             Window window = dialog.getWindow();
             if (window != null) {
                 window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -201,14 +198,22 @@ public class home_page extends AppCompatActivity implements NavigationView.OnNav
                 window.getAttributes().windowAnimations = R.anim.dialog_animation;
             }
 
-            // নিচে Access নিচ্ছি EditText আর Button
-            EditText edtUserId = contentView.findViewById(R.id.edit_user_id); // তোমার XML-এ EditText-এর ID এইভাবে দাও
-            MaterialButton btnSearch = contentView.findViewById(R.id.btn_search); // Button-এর ID
-
-            // Button Click Listener
+            // Access UI components from layout_bottom_sheet.xml
+            EditText edtUserId = contentView.findViewById(R.id.edit_user_id);
+            MaterialButton btnSearch = contentView.findViewById(R.id.btn_search);
             LinearLayout layoutLoadingArea = contentView.findViewById(R.id.layout_loading_area);
             ProgressBar progressBar = contentView.findViewById(R.id.loading_spinner);
             TextView loadingText = contentView.findViewById(R.id.loading_text);
+
+            // 2nd hidden layout
+            LinearLayout layoutUserDetails = contentView.findViewById(R.id.layout_user_details); // Add ID in XML for this layout
+            layoutUserDetails.setVisibility(View.GONE); // initially gone
+
+            // Access fields from 2nd layout
+            EditText edtCustomerId = contentView.findViewById(R.id.customer_id_edit); // add id in xml: android:id="@+id/customer_id_edit"
+            TextView txtName = contentView.findViewById(R.id.txt_name); // add id in xml: android:id="@+id/txt_name"
+            EditText edtAmount = contentView.findViewById(R.id.amount_edit); // add id in xml: android:id="@+id/amount_edit"
+            MaterialButton btnOk = contentView.findViewById(R.id.btn_ok);
 
             btnSearch.setOnClickListener(v -> {
                 String userId = edtUserId.getText().toString().trim();
@@ -216,40 +221,63 @@ public class home_page extends AppCompatActivity implements NavigationView.OnNav
                 if (!userId.isEmpty()) {
                     btnSearch.setEnabled(false);
                     btnSearch.setText("Loading...");
-                    layoutLoadingArea.setVisibility(View.VISIBLE); // Show spinner section
+                    layoutLoadingArea.setVisibility(View.VISIBLE);
                     btnSearch.setVisibility(View.GONE);
 
                     new Handler().postDelayed(() -> {
                         if (userId.equals("123456789")) {
-                            Toast.makeText(home_page.this, "User Found: " + userId, Toast.LENGTH_SHORT).show();
-                            // Additional actions here
+                            // Show 2nd layout
+                            layoutUserDetails.setVisibility(View.VISIBLE);
 
+                            // Hide input and loading section
+                            edtUserId.setVisibility(View.GONE);
+                            layoutLoadingArea.setVisibility(View.GONE);
+                            btnSearch.setVisibility(View.GONE);
 
+                            // Set sample data (You can load from server here)=========================
+                            edtCustomerId.setText(userId);
+                            txtName.setText("M. Md Shoel Rana");
+                            edtAmount.setText("");
 
                         } else {
                             edtUserId.setError("Invalid User ID");
+                            layoutLoadingArea.setVisibility(View.GONE);
+                            btnSearch.setText("Search");
+                            btnSearch.setEnabled(true);
+                            btnSearch.setVisibility(View.VISIBLE);
                         }
 
-                        // Reset state
-                        layoutLoadingArea.setVisibility(View.GONE); // Hide loading
-                        btnSearch.setText("Search");
-                        btnSearch.setEnabled(true);
-                        btnSearch.setVisibility(View.VISIBLE);
                     }, 2000);
                 } else {
                     edtUserId.setError("Please enter User ID");
                 }
             });
+
+            // OK button access নিচ্ছো এখানে ====================================================
+            btnOk.setOnClickListener(okView -> {
+                String customerId = edtCustomerId.getText().toString().trim();
+                String amount = edtAmount.getText().toString().trim();
+
+                if (customerId.isEmpty()) {
+                    edtCustomerId.setError("Customer ID required");
+                    return;
+                }
+
+                if (amount.isEmpty()) {
+                    edtAmount.setError("Amount required");
+                    return;
+                }
+
+                // ⬇️ এখানে তুমি ইচ্ছেমতো server এ request পাঠাতে পারো====================================================================
+                Toast.makeText(home_page.this, "Submitting: " + customerId + " - Amount: " + amount, Toast.LENGTH_SHORT).show();
+
+                // Optional: Dialog close করা
+                // dialog.dismiss();
+            });
+
+
             dialog.show();
         });
-
-
-
-
-
-
-
-
 
     }
 

@@ -79,4 +79,99 @@
         android:textColor="#898989" />
 </LinearLayout>
 
+
+
+
+
+
+    <!-- Hidden Loading Container2 -->
+    <LinearLayout
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        >
+
+        <TextView
+            android:textColor="#A89D9D"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Customer ID"
+            android:textSize="16sp"
+            />
+
+        <EditText
+            android:inputType="number"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:hint="Customer ID"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+
+        <TextView
+            android:layout_marginTop="10dp"
+            android:textColor="#A89D9D"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Name"
+            android:textSize="16sp"
+             />
+
+        <TextView
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="M. Md Shoel Rana"
+            android:textSize="16sp"
+            />
+
+
+        <TextView
+
+            android:textColor="#A89D9D"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginTop="15dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Amount"
+            android:textSize="16sp"
+            />
+
+        <EditText
+            android:inputType="number"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginTop="10dp"
+            android:hint="Amount"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <!-- Search Button -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_ok"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_margin="15dp"
+            android:text="OK"
+            android:textSize="16sp"
+            android:textAlignment="center"
+            app:cornerRadius="12dp"
+            android:textAllCaps="false"
+            android:textColor="?android:attr/textColorPrimaryInverse"
+            android:backgroundTint="?attr/colorPrimary" />
+
+
+
+
+    </LinearLayout>
+
+
 </LinearLayout>

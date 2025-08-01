@@ -1,5 +1,6 @@
 package com.example.top_up;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
@@ -15,6 +16,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
@@ -268,14 +270,18 @@ public class home_page extends AppCompatActivity implements NavigationView.OnNav
                     return;
                 }
 
-                // ⬇️ এখানে তুমি ইচ্ছেমতো server এ request পাঠাতে পারো====================================================================
-                Toast.makeText(home_page.this, "Submitting: " + customerId + " - Amount: " + amount, Toast.LENGTH_SHORT).show();
+                // ✅ Hide keyboard before closing the form
+                InputMethodManager imm = (InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);
+                if (getCurrentFocus() != null) {
+                    imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+                }
 
-                // Optional: Dialog close করা
-                // dialog.dismiss();
+                // ✅ Close the form dialog
+                dialog.dismiss();
+
+                // ✅ Show bottom alert with custom message
+                AlertNotification.show(home_page.this, "Submitting: " + customerId + " - Amount: " + amount);
             });
-
-
             dialog.show();
         });
 

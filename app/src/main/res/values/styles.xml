@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- res/values/styles.xml -->
 <resources>
+
+    <!-- ✅ For BottomSheetDialog: Transparent background, no dim -->
+    <style name="TransparentBottomSheetDialog" parent="Theme.Design.Light.BottomSheetDialog">
+        <item name="android:backgroundDimEnabled">false</item> <!-- 🔥 Removes black dim -->
+    </style>
+
+    <!-- 🎨 Optional: Shape appearance for bottom curve (your style) -->
     <style name="ShapeAppearance.BottomCurved" parent="ShapeAppearance.Material3.Corner.None">
         <item name="cornerFamily">rounded</item>
         <item name="cornerSizeBottomLeft">20dp</item>
@@ -8,4 +14,5 @@
         <item name="cornerSizeTopLeft">0dp</item>
         <item name="cornerSizeTopRight">0dp</item>
     </style>
+
 </resources>

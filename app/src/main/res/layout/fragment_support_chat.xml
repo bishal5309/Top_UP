@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:fitsSystemWindows="true"
+    android:padding="16dp"
+    android:background="#0F253A">
+
+    <!-- Empty space will push items to bottom -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+    <!-- Support message bubble -->
+    <TextView
+        android:layout_marginLeft="10dp"
+        android:id="@+id/chatPrompt"
+        android:layout_width="330dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/chat_bubble_bg"
+        android:text="Support 24/7\nWe are here and happy to help. Please describe your problem."
+        android:textSize="14sp"
+        android:textColor="#FFFFFF"
+        android:padding="12dp"
+        android:layout_marginBottom="5dp" />
+
+    <!-- Bottom row: attach + message box -->
+    <LinearLayout
+        android:layout_margin="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
+
+        <!-- Attach icon (outside the box) -->
+
+        <FrameLayout
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginEnd="8dp"
+            android:background="@drawable/bg_attach_circle"
+            android:gravity="center">
+
+            <ImageView
+                android:layout_gravity="center"
+                android:id="@+id/attachIcon"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/attach"
+                android:contentDescription="Attach file"
+                app:tint="#88FFFFFF" />
+        </FrameLayout>
+
+        <!-- Message box -->
+        <EditText
+            android:id="@+id/messageInput"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="Message"
+            android:textSize="14sp"
+            android:textColor="#FFFFFF"
+            android:textColorHint="#88FFFFFF"
+            android:background="@drawable/message_box_bg"
+            android:padding="10dp"
+            android:inputType="textMultiLine"
+            android:maxLines="4" />
+
+    </LinearLayout>
+
+</LinearLayout>

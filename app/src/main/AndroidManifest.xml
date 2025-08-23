@@ -23,9 +23,9 @@
         </activity>
         <activity
             android:name=".CustomerSupportActivity"
-            android:exported="true">
+            android:exported="true"
+            android:windowSoftInputMode="adjustResize|stateHidden" />
 
-        </activity>
         <activity
             android:name=".PartnerCheckActivity"
             android:exported="true">

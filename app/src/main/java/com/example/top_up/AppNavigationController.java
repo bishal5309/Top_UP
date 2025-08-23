@@ -41,12 +41,12 @@ public class AppNavigationController {
                 }
             }
             // Example for future activities
-            /* else if (id == R.id.nav_profile) {
-                if (!(activity instanceof ProfileActivity)) {
-                    activity.startActivity(new Intent(activity, ProfileActivity.class));
+             else if (id == R.id.nav_cst) {
+                if (!(activity instanceof CustomerSupportActivity)) {
+                    activity.startActivity(new Intent(activity, CustomerSupportActivity.class));
                     activity.finish();
                 }
-            } */
+            }
 
             // Close drawer after click
             drawerLayout.closeDrawer(GravityCompat.START);

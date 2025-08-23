@@ -4,6 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:background="@drawable/bg_bottom_sheet"
+    android:fitsSystemWindows="true"
     android:paddingBottom="10dp">
 
     <!-- Top bar / handle -->

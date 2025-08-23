@@ -37,5 +37,10 @@
         android:title="Dark theme"
         android:icon="@drawable/ic_dark"
         android:checkable="true" />
+    <item
+        android:id="@+id/nav_cst"
+        android:title="Customer support"
+        android:icon="@drawable/cst"
+        android:checkable="true" />
 
 </menu>

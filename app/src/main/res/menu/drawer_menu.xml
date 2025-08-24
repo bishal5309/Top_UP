@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-    android:checkableBehavior="single"
-    >
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:checkableBehavior="single">
 
     <!-- First Item -->
     <item
@@ -12,14 +12,14 @@
 
     <!-- Second Item -->
     <item
-        android:id="@+id/nav_profile"
+        android:id="@+id/nav_notification"
         android:title="Notifications"
         android:icon="@drawable/ic_notification"
         android:checkable="true" />
 
     <!-- Third Item -->
     <item
-        android:id="@+id/nav_settings"
+        android:id="@+id/nav_epos"
         android:title="EPOS transactions"
         android:icon="@drawable/ic_clock"
         android:checkable="true" />
@@ -36,7 +36,8 @@
         android:id="@+id/nav_dark"
         android:title="Dark theme"
         android:icon="@drawable/ic_dark"
-        android:checkable="true" />
+        app:actionLayout="@layout/switch_item_layout"
+        android:checkable="false" />
     <item
         android:id="@+id/nav_cst"
         android:title="Customer support"

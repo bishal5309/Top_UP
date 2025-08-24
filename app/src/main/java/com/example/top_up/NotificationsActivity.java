@@ -81,6 +81,11 @@ public class NotificationsActivity extends AppCompatActivity {
         });
 
 
+        clockIcon.setOnClickListener(view -> {
+
+        });
+
+
 
 
 

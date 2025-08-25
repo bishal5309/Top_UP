@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/rootLayout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@drawable/bg_bottom_sheet"
+    android:fitsSystemWindows="true"
+    android:paddingBottom="10dp">
+
+    <!-- Top bar / handle -->
+    <View
+        android:layout_width="40dp"
+        android:layout_height="4dp"
+        android:layout_gravity="center"
+        android:background="#E7E7E7"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp" />
+
+    <!-- Title -->
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="Select period"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:paddingBottom="5dp" />
+
+    <!-- Period Options -->
+    <LinearLayout
+        android:id="@+id/periodOptionsContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/dayOption"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Day"
+            android:padding="12dp"
+            android:background="?android:selectableItemBackground" />
+
+        <TextView
+            android:id="@+id/weekOption"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Week"
+            android:padding="12dp"
+            android:background="?android:selectableItemBackground" />
+
+        <TextView
+            android:id="@+id/monthOption"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Month"
+            android:padding="12dp"
+            android:background="?android:selectableItemBackground" />
+
+        <TextView
+            android:id="@+id/periodOption"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Period"
+            android:padding="12dp"
+            android:background="?android:selectableItemBackground" />
+    </LinearLayout>
+
+    <!-- Calendar Container -->
+    <LinearLayout
+        android:id="@+id/calendarContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="gone"
+        android:padding="16dp">
+
+        <TextView
+            android:id="@+id/dateRangeLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Select Date"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:layout_gravity="center"
+             />
+
+        <CalendarView
+            android:id="@+id/calendarView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp" />
+
+        <Button
+            android:id="@+id/btnNext"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Next"
+            android:backgroundTint="?attr/colorPrimary"
+            android:textColor="@android:color/white"
+            android:textAllCaps="false"
+            android:layout_marginBottom="5dp" />
+    </LinearLayout>
+
+</LinearLayout>

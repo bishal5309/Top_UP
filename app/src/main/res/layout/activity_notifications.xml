@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <androidx.drawerlayout.widget.DrawerLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -10,7 +11,7 @@
         android:id="@+id/main"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#0F253A">
+        android:background="#1D334A">
 
         <!-- Top Menu Bar -->
         <LinearLayout
@@ -61,6 +62,46 @@
                 app:tint="#88FFFFFF"/>
         </LinearLayout>
 
+        <!-- Date Range View -->
+        <LinearLayout
+            android:id="@+id/dateRangeContainer"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:orientation="horizontal"
+            android:background="@drawable/bg_date_range"
+            android:padding="4dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="4dp"
+            android:gravity="center_vertical"
+            android:visibility="gone"
+            app:layout_constraintTop_toBottomOf="@id/topBar"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <ImageView
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:src="@drawable/ic_clock"
+                android:layout_marginEnd="6dp"
+                app:tint="@android:color/white" />
+
+            <TextView
+                android:id="@+id/dateRangeText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="18 August 2025 - 24 August 2025"
+                android:textColor="@android:color/white"
+                android:textSize="14sp" />
+
+            <ImageView
+                android:id="@+id/closeDateRange"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:src="@drawable/ic_close"
+                android:layout_marginStart="8dp"
+                app:tint="@android:color/white" />
+        </LinearLayout>
+
         <!-- TabLayout -->
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tabLayout"
@@ -73,7 +114,7 @@
             app:tabIndicatorHeight="3dp"
             app:tabGravity="fill"
             app:tabMode="fixed"
-            app:layout_constraintTop_toBottomOf="@id/topBar"/>
+            app:layout_constraintTop_toBottomOf="@id/dateRangeContainer"/>
 
         <!-- ViewPager2 -->
         <androidx.viewpager2.widget.ViewPager2

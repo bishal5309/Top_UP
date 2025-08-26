@@ -2,7 +2,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/drawerLayout"
-    android:background="@color/white"
+    android:background="?attr/cardBackgroundColor"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:background="@color/white"
+        android:background="?attr/cardBackgroundColor"
         android:fitsSystemWindows="true">
 
         <!-- Toolbar -->
@@ -22,14 +22,15 @@
             android:orientation="horizontal"
             android:padding="10dp"
             android:gravity="center_vertical"
-            android:background="@color/white">
+            android:background="?attr/cardBackgroundColor">
 
             <ImageView
                 android:id="@+id/menu_icon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/menu"
-                android:contentDescription="Menu" />
+                android:contentDescription="Menu"
+                app:tint="?attr/customIconTint" />
 
             <TextView
                 android:layout_marginStart="16dp"
@@ -38,14 +39,14 @@
                 android:text="My account"
                 android:textSize="20sp"
                 android:textStyle="bold"
-                android:textColor="@color/black" />
+                android:textColor="?attr/customTextColor" />
         </LinearLayout>
 
         <!-- Content -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="#ECEDF1"
+            android:background="?attr/customTextColor5"
             android:orientation="vertical">
 
             <EditText
@@ -55,7 +56,7 @@
                 android:layout_margin="15dp"
                 android:layout_marginTop="20dp"
                 android:textColorHint="#CCCDD1"
-                android:textColor="@color/black"
+                android:textColor="?attr/customTextColor"
                 android:hint="Player ID"
                 android:inputType="number" />
 
@@ -65,11 +66,11 @@
                 android:layout_height="55dp"
                 android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp"
-                android:backgroundTint="#205080"
+                android:backgroundTint="?attr/cardBackgroundColor"
                 android:text="Send"
                 android:textAlignment="center"
                 android:textAllCaps="false"
-                android:textColor="@color/white"
+                android:textColor="?attr/customTextColor"
                 android:textSize="16sp"
                 app:cornerRadius="12dp" />
         </LinearLayout>
@@ -86,5 +87,5 @@
         app:itemTextColor="@color/nav_item_color"
         app:itemIconTint="@color/nav_item_color"
         app:itemBackground="@drawable/nav_item_background"
-        android:background="#102840"/>
+        android:background="?attr/cardBackgroundColor"/>
 </androidx.drawerlayout.widget.DrawerLayout>

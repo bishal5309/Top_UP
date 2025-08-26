@@ -59,16 +59,18 @@ public class NotificationsActivity extends AppCompatActivity {
             return insets;
         });
 
-        // ✅ Status bar color for dark/light mode
-        int nightModeFlags = getResources().getConfiguration().uiMode &
-                android.content.res.Configuration.UI_MODE_NIGHT_MASK;
+        int nightModeFlags =
+                getResources().getConfiguration().uiMode &
+                        android.content.res.Configuration.UI_MODE_NIGHT_MASK;
 
         if (nightModeFlags == android.content.res.Configuration.UI_MODE_NIGHT_YES) {
-            getWindow().setStatusBarColor(Color.BLACK);
-            getWindow().getDecorView().setSystemUiVisibility(0);
+            // Dark theme
+            getWindow().setStatusBarColor(Color.parseColor("#112740")); // Dark Gray/Black
+            getWindow().getDecorView().setSystemUiVisibility(0); // হোয়াইট আইকন
         } else {
-            getWindow().setStatusBarColor(Color.WHITE);
-            getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+            // Light theme
+            getWindow().setStatusBarColor(Color.parseColor("#FFFFFF")); // হালকা কাস্টম হোয়াইট
+            getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR); // কালো আইকন
         }
 
         // ✅ Drawer & Navigation

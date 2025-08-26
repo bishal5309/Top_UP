@@ -4,5 +4,5 @@
     <item android:color="#4596E6" android:state_checked="true" />
 
     <!-- Default text color based on theme -->
-    <item android:color="?android:attr/textColorPrimary" />
+    <item android:color="?attr/customTextColor" />
 </selector>

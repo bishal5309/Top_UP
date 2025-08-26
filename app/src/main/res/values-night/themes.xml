@@ -1,20 +1,44 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <style name="Theme.YourApp" parent="Theme.MaterialComponents.DayNight.NoActionBar">
-        <!-- Dark mode colors -->
+
+        <!-- Brand Colors -->
         <item name="colorPrimary">#90CAF9</item>
         <item name="colorPrimaryVariant">#1976D2</item>
         <item name="colorOnPrimary">#000000</item>
 
-        <!-- Background color -->
+        <!-- Background -->
         <item name="android:colorBackground">#121212</item>
         <item name="colorOnBackground">#FFFFFF</item>
+        <item name="colorSurface">#1E1E1E</item>
+        <item name="colorOnSurface">#FFFFFF</item>
 
-        <!-- EditText, Buttons, etc -->
+        <!-- Controls -->
         <item name="colorControlNormal">#90CAF9</item>
+        <item name="colorControlActivated">#90CAF9</item>
         <item name="android:textColor">#FFFFFF</item>
 
+        <!-- Custom Attributes -->
+        <item name="cardBackgroundColor">#112740</item>
 
-        <item name="cardBackgroundColor">#1E1E1E</item>
+        <item name="cardBackgroundColor2">#283C54</item>
+        <item name="cardBackgroundColor3">#405268</item>
+
+        <item name="customTextColor">#FFFFFF</item>
+        <item name="customTextColor2">#C4CAD2</item>
+        <item name="customTextColor3">#C4CAD2</item>
+        <item name="customTextColor4">@color/white</item>
+        <item name="customTextColor5">#746F6F</item>
+
+        <item name="customButtonColor">#1d334a</item>
+        <item name="customButtonColor2">#1d334a</item>
+
+        <item name="customIconTint">#C5CBD8</item>
+
+
+
+        <item name="customSelector">#183350</item>
+
+
 
     </style>
 </resources>

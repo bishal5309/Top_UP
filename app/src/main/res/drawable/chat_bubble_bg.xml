@@ -1,5 +1,5 @@
 <shape xmlns:android="http://schemas.android.com/apk/res/android">
-    <solid android:color="#283E53"/> <!-- Bubble background -->
+    <solid android:color="?attr/customButtonColor2"/> <!-- Bubble background -->
     <corners
         android:bottomLeftRadius="0dp"
         android:topLeftRadius="12dp"

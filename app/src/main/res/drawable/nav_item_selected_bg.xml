@@ -2,7 +2,7 @@
     android:insetRight="8dp"> <!-- right margin এর simulation -->
 
     <shape android:shape="rectangle">
-        <solid android:color="#183350"/>
+        <solid android:color="?attr/customSelector"/>
         <corners
             android:topRightRadius="50dp"
             android:bottomRightRadius="50dp"

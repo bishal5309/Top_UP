@@ -7,6 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity"
+    android:background="?attr/cardBackgroundColor"
     android:orientation="vertical">
 
 
@@ -16,12 +17,14 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="40dp"
         android:scaleType="centerCrop"
-        android:src="@drawable/ticket" />
+        android:src="@drawable/ticket"
+         />
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Welcome"
         android:layout_gravity="center_horizontal"
+        android:textColor="?attr/customTextColor"
         android:textStyle="bold"
         android:textSize="40sp" />
 
@@ -32,7 +35,7 @@
         android:layout_gravity="center_horizontal"
         android:textStyle="bold"
         android:textSize="20sp"
-        android:textColor="#959595"
+        android:textColor="?attr/customTextColor5"
         />
 
 
@@ -40,17 +43,20 @@
         android:id="@+id/csid"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:textColor="?attr/customTextColor"
         android:layout_margin="15dp"
         android:hint="Customer ID"/>
 
     <EditText
         android:id="@+id/password"
+        android:textColor="?attr/customTextColor"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="15dp"
         android:hint="Password"/>
 
     <EditText
+        android:textColor="?attr/customTextColor"
         android:id="@+id/wc"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -58,8 +64,6 @@
         android:hint="Workplace code"/>
 
     <LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -79,20 +83,21 @@
             android:text="REMEMBER PASSWORD"
             android:textAllCaps="true"
             android:textSize="20sp"
+            android:textColor="?attr/customTextColor"
             android:layout_gravity="center_vertical"
             android:paddingStart="8dp"/>
     </LinearLayout>
 
     <androidx.cardview.widget.CardView
         android:id="@+id/login"
-        android:backgroundTint="#205080"
+        android:backgroundTint="?attr/customButtonColor"
         android:layout_margin="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:cardCornerRadius="15dp">
 
         <TextView
-            android:textColor="@color/white"
+            android:textColor="?attr/customTextColor"
             android:layout_margin="18dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -109,5 +114,6 @@
         android:layout_height="wrap_content"
         android:textSize="20sp"
         android:textStyle="bold"
+        android:textColor="?attr/customTextColor"
         android:text="Version: 53"/>
 </LinearLayout>

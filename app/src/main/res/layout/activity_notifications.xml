@@ -11,7 +11,7 @@
         android:id="@+id/main"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#1D334A">
+        android:background="?attr/cardBackgroundColor">
 
         <!-- Top Menu Bar -->
         <LinearLayout
@@ -19,7 +19,7 @@
             android:layout_width="match_parent"
             android:layout_height="56dp"
             android:orientation="horizontal"
-            android:background="#1D334A"
+            android:background="?attr/cardBackgroundColor"
             android:paddingHorizontal="16dp"
             android:gravity="center_vertical"
             app:layout_constraintTop_toTopOf="parent">
@@ -29,7 +29,7 @@
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:src="@drawable/menu"
-                app:tint="#88FFFFFF"/>
+                app:tint="?attr/customIconTint"/>
 
             <TextView
                 android:id="@+id/titleText"
@@ -37,7 +37,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Notifications"
-                android:textColor="@android:color/white"
+                android:textColor="?attr/customTextColor"
                 android:textSize="18sp"
                 android:textStyle="bold"/>
 
@@ -52,14 +52,14 @@
                 android:layout_height="24dp"
                 android:layout_marginEnd="8dp"
                 android:src="@drawable/ic_clock"
-                app:tint="#88FFFFFF"/>
+                app:tint="?attr/customIconTint"/>
 
             <ImageView
                 android:id="@+id/refreshIcon"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:src="@drawable/refresh"
-                app:tint="#88FFFFFF"/>
+                app:tint="?attr/customIconTint"/>
         </LinearLayout>
 
         <!-- Date Range View -->
@@ -107,10 +107,10 @@
             android:id="@+id/tabLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#1D334A"
+            android:background="?attr/cardBackgroundColor"
             app:tabIndicatorColor="#284E72"
-            app:tabSelectedTextColor="@color/white"
-            app:tabTextColor="#AAAAAA"
+            app:tabSelectedTextColor="?attr/customTextColor"
+            app:tabTextColor="?attr/customTextColor5"
             app:tabIndicatorHeight="3dp"
             app:tabGravity="fill"
             app:tabMode="fixed"
@@ -136,5 +136,5 @@
         app:itemTextColor="@color/nav_item_color"
         app:itemIconTint="@color/nav_item_color"
         app:itemBackground="@drawable/nav_item_background"
-        android:background="#102840"/>
+        android:background="?attr/cardBackgroundColor"/>
 </androidx.drawerlayout.widget.DrawerLayout>

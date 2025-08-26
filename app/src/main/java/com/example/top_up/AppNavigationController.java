@@ -26,7 +26,7 @@ public class AppNavigationController {
         this.navigationView = navigationView;
 
         setupNavigation();       // normal navigation
-        setupDarkThemeSwitch();  // ✅ dark theme switch
+        setupDarkThemeSwitch();  // dark theme switch inside app
     }
 
     private void setupNavigation() {
@@ -39,12 +39,12 @@ public class AppNavigationController {
                     activity.finish();
                 }
             } else if (id == R.id.nav_notification) {
-                if (!(activity instanceof CustomerSupportActivity)) {
+                if (!(activity instanceof NotificationsActivity)) {
                     activity.startActivity(new Intent(activity, NotificationsActivity.class));
                     activity.finish();
                 }
             } else if (id == R.id.nav_epos) {
-                if (!(activity instanceof CustomerSupportActivity)) {
+                if (!(activity instanceof TransactionsActivity)) {
                     activity.startActivity(new Intent(activity, TransactionsActivity.class));
                     activity.finish();
                 }
@@ -85,24 +85,32 @@ public class AppNavigationController {
                 return;
             }
 
-            // ✅ Apply custom thumb & track tint
+            // Custom thumb & track tint
             themeSwitch.setThumbTintList(ContextCompat.getColorStateList(activity, R.color.switch_thumb_color));
             themeSwitch.setTrackTintList(ContextCompat.getColorStateList(activity, R.color.switch_track_color));
 
+            // SharedPreferences to remember user choice
             SharedPreferences prefs = activity.getSharedPreferences("theme_prefs", Activity.MODE_PRIVATE);
-            boolean savedState = prefs.getBoolean("is_dark_switch_on", false);
+            boolean isDarkMode = prefs.getBoolean("is_dark_switch_on", false);
 
-            themeSwitch.setChecked(savedState);
+            // Apply saved theme (default light)
+            if (isDarkMode) {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+            } else {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+            }
 
+            themeSwitch.setChecked(isDarkMode);
+
+            // Toggle theme when user switches
             themeSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
                 prefs.edit().putBoolean("is_dark_switch_on", isChecked).apply();
 
-                // ✅ Theme logic (optional: uncomment when needed)
-                // if (isChecked) {
-                //     AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-                // } else {
-                //     AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-                // }
+                if (isChecked) {
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+                } else {
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+                }
             });
         });
     }

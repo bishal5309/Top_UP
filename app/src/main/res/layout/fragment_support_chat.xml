@@ -7,7 +7,7 @@
     android:orientation="vertical"
     android:fitsSystemWindows="true"
     android:padding="16dp"
-    android:background="#0F253A">
+    android:background="?attr/cardBackgroundColor">
 
     <!-- Empty space will push items to bottom -->
     <View
@@ -24,7 +24,7 @@
         android:background="@drawable/chat_bubble_bg"
         android:text="Support 24/7\nWe are here and happy to help. Please describe your problem."
         android:textSize="14sp"
-        android:textColor="#FFFFFF"
+        android:textColor="?attr/customTextColor"
         android:padding="12dp"
         android:layout_marginBottom="5dp" />
 
@@ -52,7 +52,7 @@
                 android:layout_height="24dp"
                 android:src="@drawable/attach"
                 android:contentDescription="Attach file"
-                app:tint="#88FFFFFF" />
+                app:tint="?attr/customIconTint" />
         </FrameLayout>
 
         <!-- Message box -->
@@ -63,8 +63,8 @@
             android:layout_weight="1"
             android:hint="Message"
             android:textSize="14sp"
-            android:textColor="#FFFFFF"
-            android:textColorHint="#88FFFFFF"
+            android:textColor="@color/blue_500"
+            android:textColorHint="?attr/customTextColor5"
             android:background="@drawable/message_box_bg"
             android:padding="10dp"
             android:inputType="textMultiLine"

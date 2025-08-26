@@ -6,7 +6,7 @@
     android:id="@+id/drawerLayout"
     android:fitsSystemWindows="true"
     android:layout_width="match_parent"
-    android:background="@color/white"
+    android:background="?attr/cardBackgroundColor"
     android:layout_height="match_parent"
     tools:context=".home_page">
 
@@ -21,7 +21,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:background="@color/white">
+        android:background="?attr/cardBackgroundColor">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -30,6 +30,7 @@
             android:gravity="center_vertical">
 
             <ImageView
+                app:tint="?attr/customIconTint"
                 android:id="@+id/menu_icon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -43,7 +44,7 @@
                 android:text="My account"
                 android:textSize="20sp"
                 android:textStyle="bold"
-                android:textColor="@color/black" />
+                android:textColor="?attr/customTextColor" />
         </LinearLayout>
 
         <!-- Header bar -->
@@ -54,7 +55,7 @@
             app:cardElevation="4dp"
             android:layout_marginBottom="10dp"
             app:cardCornerRadius="15dp"
-            app:cardBackgroundColor="@android:color/transparent">
+            >
             <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -103,7 +104,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_margin="16dp"
-                        android:backgroundTint="#EEEFF1"
+                        android:backgroundTint="?attr/cardBackgroundColor2"
                         app:cardCornerRadius="12dp">
 
                         <LinearLayout
@@ -120,13 +121,14 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_margin="2dp"
-                                    android:backgroundTint="#D8D8D8"
+                                    android:backgroundTint="?attr/cardBackgroundColor3"
                                     app:cardCornerRadius="10dp">
 
                                     <ImageButton
                                         android:id="@+id/btnRefresh"
                                         android:layout_width="48dp"
                                         android:layout_height="48dp"
+                                        app:tint="?attr/customIconTint"
                                         android:background="@android:color/transparent"
                                         android:src="@drawable/refresh"
                                         android:contentDescription="Refresh"/>
@@ -145,7 +147,7 @@
                                         android:text="0.00 ৳"
                                         android:textSize="16sp"
                                         android:textStyle="bold"
-                                        android:textColor="@color/black" />
+                                        android:textColor="?attr/customTextColor2" />
 
                                     <TextView
                                         android:id="@+id/tvCurrency"
@@ -153,7 +155,7 @@
                                         android:layout_height="wrap_content"
                                         android:text="BDT (৳)"
                                         android:textSize="12sp"
-                                        android:textColor="#666666" />
+                                        android:textColor="#646464" />
                                 </LinearLayout>
                             </RelativeLayout>
 
@@ -185,7 +187,7 @@
 
                     <TextView
                         android:layout_marginTop="5dp"
-                        android:textColor="@color/black"
+                        android:textColor="?attr/customTextColor2"
                         android:layout_marginLeft="10dp"
                         android:layout_marginRight="10dp"
                         android:layout_marginBottom="15dp"
@@ -241,7 +243,6 @@
 
         <androidx.cardview.widget.CardView
             android:id="@+id/exit"
-            android:backgroundTint="@color/white"
             android:layout_margin="10dp"
             android:layout_width="match_parent"
             app:cardElevation="5dp"
@@ -253,19 +254,22 @@
                 android:gravity="center_vertical"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="?attr/customButtonColor"
                 android:orientation="horizontal">
 
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/exit" />
+                    android:src="@drawable/exit"
+                    app:tint="?attr/customIconTint" />
 
                 <TextView
                     android:layout_marginLeft="15dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="16sp"
-                    android:textColor="@color/black"
+
+                    android:textColor="?attr/customTextColor"
                     android:text="Exit"/>
 
             </LinearLayout>
@@ -291,7 +295,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Balance: 19,202.27 ৳"
-                    android:textColor="#746F6F"
+                    android:textColor="?attr/customTextColor4"
                     android:textSize="16sp"
                     />
             </FrameLayout>
@@ -309,7 +313,7 @@
         app:itemTextColor="@color/nav_item_color"
         app:itemIconTint="@color/nav_item_color"
         app:itemBackground="@drawable/nav_item_background"
-        android:background="#102840"
+        android:background="?attr/cardBackgroundColor"
         />
 
 

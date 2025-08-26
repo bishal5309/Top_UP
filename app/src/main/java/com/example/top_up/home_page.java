@@ -68,14 +68,15 @@ public class home_page extends AppCompatActivity {
                         android.content.res.Configuration.UI_MODE_NIGHT_MASK;
 
         if (nightModeFlags == android.content.res.Configuration.UI_MODE_NIGHT_YES) {
-            // Dark theme / Night mode
-            getWindow().setStatusBarColor(Color.BLACK); // Status bar কালো
-            getWindow().getDecorView().setSystemUiVisibility(0); // আইকন হোয়াইট
+            // Dark theme
+            getWindow().setStatusBarColor(Color.parseColor("#112740")); // Dark Gray/Black
+            getWindow().getDecorView().setSystemUiVisibility(0); // হোয়াইট আইকন
         } else {
             // Light theme
-            getWindow().setStatusBarColor(Color.WHITE); // Status bar হোয়াইট
-            getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR); // আইকন কালো
+            getWindow().setStatusBarColor(Color.parseColor("#FFFFFF")); // হালকা কাস্টম হোয়াইট
+            getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR); // কালো আইকন
         }
+
 
 
         drawerLayout = findViewById(R.id.drawerLayout);

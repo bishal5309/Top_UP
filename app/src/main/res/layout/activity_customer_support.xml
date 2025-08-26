@@ -11,7 +11,7 @@
     >
 
     <LinearLayout
-        android:background="#1D334A"
+        android:background="?customButtonColor2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
@@ -28,7 +28,7 @@
                 android:id="@+id/back"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
-                app:tint="#88FFFFFF"
+                app:tint="?attr/customIconTint"
                 android:src="@drawable/back"
                 />
 
@@ -37,7 +37,9 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Customer support"
+                android:textColor="?attr/customTextColor"
                 android:textSize="18sp"
+                android:textStyle="bold"
                 android:layout_marginLeft="15dp" />
 
 
@@ -45,7 +47,7 @@
 
         <!-- TabLayout with indicator -->
         <com.google.android.material.tabs.TabLayout
-            android:background="#1D334A"
+            android:background="?customButtonColor2"
             android:id="@+id/tabLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

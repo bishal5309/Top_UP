@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:gravity="center"
-    android:background="#1D334A"
+    android:background="?attr/cardBackgroundColor"
     android:padding="24dp">
 
     <ImageView
@@ -14,14 +14,14 @@
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:src="@drawable/ic_envelope"
-        app:tint="@color/white" />
+        app:tint="?attr/customIconTint" />
 
     <TextView
         android:id="@+id/emptyMessage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="You don't have any notifications yet.\nTo stay updated, check back later."
-        android:textColor="@color/white"
+        android:textColor="?attr/customTextColor"
         android:textSize="16sp"
         android:gravity="center"
         android:layout_marginTop="16dp" />

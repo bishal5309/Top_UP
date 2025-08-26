@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Gravity;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -38,6 +39,19 @@ public class CustomerSupportActivity extends AppCompatActivity {
             return insets;
         });
 
+        int nightModeFlags =
+                getResources().getConfiguration().uiMode &
+                        android.content.res.Configuration.UI_MODE_NIGHT_MASK;
+
+        if (nightModeFlags == android.content.res.Configuration.UI_MODE_NIGHT_YES) {
+            // Dark theme
+            getWindow().setStatusBarColor(Color.parseColor("#112740")); // Dark Gray/Black
+            getWindow().getDecorView().setSystemUiVisibility(0); // হোয়াইট আইকন
+        } else {
+            // Light theme
+            getWindow().setStatusBarColor(Color.parseColor("#FFFFFF")); // হালকা কাস্টম হোয়াইট
+            getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);} // কালো আইকন
+
         // Initialize views
         viewPager = findViewById(R.id.viewPager);
         tabLayout = findViewById(R.id.tabLayout);
@@ -70,6 +84,8 @@ public class CustomerSupportActivity extends AppCompatActivity {
             tabText.setText(position == 0 ? "Support chat" : "FAQ");
             tabText.setAllCaps(false);
             tabText.setTextSize(16);
+            tabText.setTextColor(Color.parseColor("#FFFFFF")); // Hex color code
+
             tabText.setGravity(Gravity.CENTER);
 
             // Ensure full width so gravity works

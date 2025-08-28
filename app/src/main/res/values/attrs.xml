@@ -3,6 +3,7 @@
         <attr name="cardBackgroundColor" format="color" />
         <attr name="cardBackgroundColor2" format="color" />
         <attr name="cardBackgroundColor3" format="color" />
+        <attr name="cardBackgroundColor4" format="color" />
         <attr name="customTextColor" format="color" />
         <attr name="customTextColor2" format="color" />
         <attr name="customTextColor3" format="color" />

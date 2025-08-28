@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.example.top_up">
 
     <application
         android:allowBackup="true"
@@ -12,15 +13,25 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.YourApp">
 
+        <!-- ✅ Custom SplashActivity as Launcher -->
         <activity
-            android:name=".MainActivity"
-            android:exported="true">
+            android:name=".activity_splash"
+            android:exported="true"
+            android:theme="@style/Theme.YourApp">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+
+        <!-- ✅ Main Activity -->
+        <activity
+            android:name=".MainActivity"
+            android:exported="true"
+            android:theme="@style/Theme.YourApp" />
+
+        <!-- ✅ Other Activities -->
         <activity
             android:name=".CustomerSupportActivity"
             android:exported="true"
@@ -28,21 +39,21 @@
 
         <activity
             android:name=".PartnerCheckActivity"
-            android:exported="true">
-        </activity>
+            android:exported="true" />
+
         <activity
             android:name=".TransactionsActivity"
-            android:exported="true">
-        </activity>
+            android:exported="true" />
+
         <activity
             android:name=".NotificationsActivity"
-            android:exported="true">
-        </activity>
+            android:exported="true" />
 
         <activity
             android:name=".home_page"
             android:exported="true"
             android:windowSoftInputMode="adjustResize" />
+
     </application>
 
 </manifest>

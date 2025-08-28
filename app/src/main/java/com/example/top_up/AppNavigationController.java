@@ -68,7 +68,7 @@ public class AppNavigationController {
     private void setupDarkThemeSwitch() {
         navigationView.post(() -> {
             View actionView = null;
-            SwitchCompat themeSwitch = null;
+            SwitchCompat themeSwitch;
 
             if (navigationView.getMenu().findItem(R.id.nav_dark) != null) {
                 actionView = navigationView.getMenu()
@@ -77,7 +77,11 @@ public class AppNavigationController {
 
                 if (actionView != null) {
                     themeSwitch = actionView.findViewById(R.id.theme_switch);
+                } else {
+                    themeSwitch = null;
                 }
+            } else {
+                themeSwitch = null;
             }
 
             if (themeSwitch == null) {
@@ -102,7 +106,7 @@ public class AppNavigationController {
 
             themeSwitch.setChecked(isDarkMode);
 
-            // Toggle theme when user switches
+            // ✅ Toggle theme when user switches
             themeSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
                 prefs.edit().putBoolean("is_dark_switch_on", isChecked).apply();
 
@@ -111,6 +115,12 @@ public class AppNavigationController {
                 } else {
                     AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
                 }
+            });
+
+            // ✅ Handle clicks on the whole nav_dark item (text or icon)
+            navigationView.getMenu().findItem(R.id.nav_dark).setOnMenuItemClickListener(item -> {
+                themeSwitch.toggle(); // simulate switch toggle
+                return true; // don't close drawer
             });
         });
     }

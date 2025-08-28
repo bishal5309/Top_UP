@@ -1,17 +1,19 @@
 package com.example.top_up;
 
 import android.app.Activity;
-import android.view.LayoutInflater;
-import android.view.View;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Handler;
+import android.util.TypedValue;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.ImageView;
-import android.widget.TextView;
 import android.view.ViewGroup;
+import android.view.animation.AccelerateDecelerateInterpolator;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.util.TypedValue;
+import android.widget.TextView;
 
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 
@@ -72,5 +74,23 @@ public class AlertNotification {
 
         // 🚀 Show the dialog
         bottomDialog.show();
+
+        // ⏳ Auto-dismiss after 2 seconds with slide-down animation
+        new Handler().postDelayed(() -> {
+            View sheetView = bottomDialog.getWindow().findViewById(
+                    com.google.android.material.R.id.design_bottom_sheet
+            );
+            if (sheetView != null) {
+                sheetView.animate()
+                        .translationY(sheetView.getHeight())
+                        .alpha(0f)
+                        .setInterpolator(new AccelerateDecelerateInterpolator())
+                        .setDuration(300)
+                        .withEndAction(bottomDialog::dismiss)
+                        .start();
+            } else {
+                bottomDialog.dismiss(); // fallback
+            }
+        }, 2000); // 2000ms = 2 seconds
     }
 }

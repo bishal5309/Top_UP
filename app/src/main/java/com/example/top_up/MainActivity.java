@@ -30,6 +30,9 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        // ✅ Theme apply korte hobe sob theke age
+        ThemeHelper.applyTheme(this);
+
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
@@ -63,7 +66,6 @@ public class MainActivity extends AppCompatActivity {
                         inputPassword.equals(correctPassword) &&
                         inputWorkCode.equals(correctWorkCode)) {
 
-                    // লগিন সফল: শুধু তখনই remember কাজ করবে
                     if (checkBoxRemember.isChecked()) {
                         SharedPreferences.Editor editor = sharedPreferences.edit();
                         editor.putString("csid", inputCustomerId);
@@ -72,7 +74,6 @@ public class MainActivity extends AppCompatActivity {
                         editor.putBoolean("remember", true);
                         editor.apply();
                     } else {
-                        // টিক না থাকলে ক্লিয়ার করো
                         sharedPreferences.edit().clear().apply();
                     }
 
@@ -82,17 +83,13 @@ public class MainActivity extends AppCompatActivity {
                     finish();
 
                 } else {
-                    // লগিন ভুল হলে ডেটা ক্লিয়ার করো যাতে ভুল ইনপুট থেকে আগের ডেটা না থাকে
                     sharedPreferences.edit().clear().apply();
-
                     Toast.makeText(MainActivity.this, "Invalid credentials", Toast.LENGTH_SHORT).show();
                 }
             }
         });
-
     }
 
-    // 🟢 Load data if remember was checked
     private void loadSavedData() {
         boolean isRemembered = sharedPreferences.getBoolean("remember", false);
         if (isRemembered) {

@@ -1,5 +1,8 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <style name="Theme.YourApp" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="android:windowIsTranslucent" >true</item>
+
+
 
         <!-- Brand Colors -->
         <item name="colorPrimary">#90CAF9</item>
@@ -22,6 +25,7 @@
 
         <item name="cardBackgroundColor2">#283C54</item>
         <item name="cardBackgroundColor3">#405268</item>
+        <item name="cardBackgroundColor4">#112740</item>
 
         <item name="customTextColor">#FFFFFF</item>
         <item name="customTextColor2">#C4CAD2</item>
@@ -36,9 +40,7 @@
 
 
 
-        <item name="customSelector">#183350</item>
-
-
-
     </style>
+
+
 </resources>

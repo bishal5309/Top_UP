@@ -1,0 +1,99 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?attr/cardBackgroundColor4"
+    android:orientation="vertical"
+    android:fitsSystemWindows="true"
+    android:gravity="center"
+    android:paddingHorizontal="24dp">
+
+    <!-- Inner Layout for Status Items -->
+    <LinearLayout
+        android:id="@+id/statusContainer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center_vertical">
+
+        <!-- Status Item 1 -->
+        <LinearLayout
+            android:padding="5dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            >
+
+            <com.example.top_up.views.AnimatedStatusView
+                android:id="@+id/status1"
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:background="@drawable/rounded_bg"
+                android:padding="3dp"
+               />
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Receiving data from server"
+                android:textSize="12sp"
+                android:textColor="?android:textColorPrimary"
+                android:layout_marginStart="12dp" />
+        </LinearLayout>
+
+        <!-- Status Item 2 -->
+        <LinearLayout
+            android:padding="5dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            >
+
+            <com.example.top_up.views.AnimatedStatusView
+                android:id="@+id/status2"
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:background="@drawable/rounded_bg"
+                android:padding="3dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Sending app data"
+                android:textSize="12sp"
+                android:textColor="?android:textColorPrimary"
+                android:layout_marginStart="12dp" />
+        </LinearLayout>
+
+        <!-- Status Item 3 -->
+        <LinearLayout
+            android:padding="5dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            >
+
+            <com.example.top_up.views.AnimatedStatusView
+                android:id="@+id/status3"
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:background="@drawable/rounded_bg"
+                android:padding="3dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Preparing to launch app"
+                android:textSize="12sp"
+                android:textColor="?android:textColorPrimary"
+                android:layout_marginStart="12dp" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

@@ -20,6 +20,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.activity.EdgeToEdge;
@@ -47,7 +48,7 @@ public class home_page extends AppCompatActivity {
     private ImageView menuIcon;
 
     private CardView exit;
-    private AppCompatButton btn_top_up;
+    private AppCompatButton btn_top_up,btn_withdraw;
 
     private AppNavigationController navController;
 
@@ -92,6 +93,14 @@ public class home_page extends AppCompatActivity {
         progressContainer = findViewById(R.id.progressContainer);
         whiteOverlay = findViewById(R.id.whiteOverlay);
 
+
+        btn_withdraw = findViewById(R.id.btn_withdraw);
+        btn_withdraw.setOnClickListener(v -> {
+            showWithdrawDialog();
+        });
+
+
+
         btnRefresh.setOnClickListener(v -> {
             btnRefresh.animate().rotationBy(360f).setDuration(600).start();
             float newAmount = (float) (Math.random() * maxAmount);
@@ -115,7 +124,6 @@ public class home_page extends AppCompatActivity {
 
         btn_top_up = findViewById(R.id.btn_top_up);
         btn_top_up.setOnClickListener(v -> showTopUpDialog());
-
         // ✅ Back gesture handling
         getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
             @Override
@@ -174,7 +182,7 @@ public class home_page extends AppCompatActivity {
                         btnSearch.setVisibility(View.GONE);
 
                         edtCustomerId.setText(userId);
-                        txtName.setText("M. Md Shoel Rana");
+                        txtName.setText("Unknown user");
                         edtAmount.setText("");
                     } else {
                         edtUserId.setError("Invalid User ID");
@@ -209,6 +217,51 @@ public class home_page extends AppCompatActivity {
 
             dialog.dismiss();
             AlertNotification.show(home_page.this, "Submitting: " + customerId + " - Amount: " + amount);
+        });
+
+        dialog.show();
+    }
+
+    private void showWithdrawDialog() {
+        Dialog dialog = new Dialog(home_page.this);
+        View contentView = LayoutInflater.from(home_page.this).inflate(R.layout.layout_bottom_sheet2, null);
+        dialog.setContentView(contentView);
+
+        Window window = dialog.getWindow();
+        if (window != null) {
+            window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            window.setGravity(Gravity.BOTTOM);
+            window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            window.getAttributes().windowAnimations = R.anim.dialog_animation; // নিচ থেকে আসবে
+        }
+
+        EditText edtCustomerId = contentView.findViewById(R.id.customer_id_edit);
+        EditText edtAmount = contentView.findViewById(R.id.amount_edit);
+        AppCompatButton btnOk = contentView.findViewById(R.id.btn_ok);
+
+        btnOk.setOnClickListener(okView -> {
+            String customerId = edtCustomerId.getText().toString().trim();
+            String amount = edtAmount.getText().toString().trim();
+
+            if (customerId.isEmpty()) {
+                edtCustomerId.setError("Recipient ID required");
+                return;
+            }
+            if (amount.isEmpty()) {
+                edtAmount.setError("Code required");
+                return;
+            }
+
+            // Keyboard hide
+            InputMethodManager imm = (InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);
+            if (getCurrentFocus() != null) {
+                imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+            }
+
+            dialog.dismiss();
+            AlertNotification.show(home_page.this,
+                    "Your withdraw address active 72 hours\nRecipient: " + customerId + "\nCode: " + amount);
+            Toast.makeText(this, "Your withdraw address active 72 hours", Toast.LENGTH_SHORT).show();
         });
 
         dialog.show();

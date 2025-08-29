@@ -33,6 +33,7 @@
 
         <item name="customButtonColor">@color/white</item>
         <item name="customButtonColor2">#CCDEF8</item>
+        <item name="customButtonColor3">#1d334a</item>
 
         <item name="customIconTint">#000000</item>
 

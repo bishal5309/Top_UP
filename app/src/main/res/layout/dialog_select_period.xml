@@ -25,6 +25,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:text="Select period"
+        android:textColor="?attr/customTextColor"
         android:textSize="18sp"
         android:textStyle="bold"
         android:paddingBottom="5dp" />
@@ -42,12 +43,14 @@
             android:layout_height="wrap_content"
             android:text="Day"
             android:padding="12dp"
+            android:textColor="?attr/customTextColor"
             android:background="?android:selectableItemBackground" />
 
         <TextView
             android:id="@+id/weekOption"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textColor="?attr/customTextColor"
             android:text="Week"
             android:padding="12dp"
             android:background="?android:selectableItemBackground" />
@@ -57,6 +60,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Month"
+            android:textColor="?attr/customTextColor"
             android:padding="12dp"
             android:background="?android:selectableItemBackground" />
 
@@ -65,6 +69,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Period"
+            android:textColor="?attr/customTextColor"
             android:padding="12dp"
             android:background="?android:selectableItemBackground" />
     </LinearLayout>
@@ -84,6 +89,7 @@
             android:layout_height="wrap_content"
             android:text="Select Date"
             android:textSize="16sp"
+            android:textColor="?attr/customTextColor"
             android:textStyle="bold"
             android:layout_gravity="center"
              />

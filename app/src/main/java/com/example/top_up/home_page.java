@@ -48,9 +48,8 @@ public class home_page extends AppCompatActivity {
     private ImageView menuIcon;
 
     private CardView exit;
-    private AppCompatButton btn_top_up,btn_withdraw;
-
     private AppNavigationController navController;
+    private LinearLayout btn_withdraw,btn_top_up;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -115,12 +114,19 @@ public class home_page extends AppCompatActivity {
         });
 
         exit = findViewById(R.id.exit);
-        exit.setOnClickListener(v -> new AlertDialog.Builder(home_page.this)
-                .setTitle("Exit App")
-                .setMessage("Are you sure you want to exit?")
-                .setPositiveButton("Yes", (dialog, which) -> finishAffinity())
-                .setNegativeButton("No", null)
-                .show());
+        exit.setOnClickListener(v ->
+                new AlertDialog.Builder(home_page.this)
+                        .setTitle("Log Out")
+                        .setIcon(R.drawable.ticket)
+                        .setMessage("Are you sure you want to Log out?")
+                        .setPositiveButton("Yes", (dialog, which) -> {
+                            Intent intent = new Intent(home_page.this, MainActivity.class); // Replace with your target activity
+                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK); // Optional: clears back stack
+                            startActivity(intent);
+                        })
+                        .setNegativeButton("No", null)
+                        .show()
+        );
 
         btn_top_up = findViewById(R.id.btn_top_up);
         btn_top_up.setOnClickListener(v -> showTopUpDialog());

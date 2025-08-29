@@ -55,8 +55,9 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="15dp"
                 android:layout_marginTop="20dp"
-                android:textColorHint="#CCCDD1"
                 android:textColor="?attr/customTextColor"
+                android:textColorHint="#CDCBCB"
+                android:backgroundTint="#CDCBCB"
                 android:hint="Player ID"
                 android:inputType="number" />
 

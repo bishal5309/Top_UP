@@ -31,6 +31,8 @@
         android:id="@+id/edit_user_id"
         android:layout_margin="15dp"
         android:layout_marginTop="20dp"
+        android:textColorHint="#CDCBCB"
+        android:backgroundTint="#CDCBCB"
         android:hint="User ID"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
@@ -113,6 +115,8 @@
             android:layout_marginRight="15dp"
             android:textColor="?attr/customTextColor"
             android:hint="Customer ID"
+            android:textColorHint="#CDCBCB"
+            android:backgroundTint="#CDCBCB"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
@@ -161,6 +165,8 @@
             android:textColor="?attr/customTextColor"
             android:layout_marginTop="10dp"
             android:hint="Amount"
+            android:textColorHint="#CDCBCB"
+            android:backgroundTint="#CDCBCB"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 

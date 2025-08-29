@@ -177,10 +177,10 @@ public class NotificationsActivity extends AppCompatActivity {
             calendarContainer.setVisibility(View.VISIBLE);
         };
 
-        day.setOnClickListener(listener);
+        /*day.setOnClickListener(listener);
         week.setOnClickListener(listener);
         month.setOnClickListener(listener);
-        period.setOnClickListener(listener);
+        period.setOnClickListener(listener);*/
 
         ImageView closeDateRange = findViewById(R.id.closeDateRange);
         closeDateRange.setOnClickListener(v -> {

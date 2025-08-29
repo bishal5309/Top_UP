@@ -35,10 +35,11 @@
 
         <item name="customButtonColor">#1d334a</item>
         <item name="customButtonColor2">#1d334a</item>
+        <item name="customButtonColor3">#1d334a</item>
 
         <item name="customIconTint">#C5CBD8</item>
 
-
+        <item name="customSelector">#193350</item>
 
     </style>
 

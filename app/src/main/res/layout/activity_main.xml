@@ -12,10 +12,10 @@
 
 
     <ImageView
-        android:layout_width="117dp"
-        android:layout_height="97dp"
+        android:layout_width="107dp"
+        android:layout_height="107dp"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="30dp"
         android:scaleType="centerCrop"
         android:src="@drawable/ticket"
          />
@@ -26,15 +26,15 @@
         android:layout_gravity="center_horizontal"
         android:textColor="?attr/customTextColor"
         android:textStyle="bold"
-        android:textSize="40sp" />
+        android:textSize="35sp" />
 
     <TextView
+        android:layout_marginTop="10dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Please fill out the following fields to log in"
         android:layout_gravity="center_horizontal"
-        android:textStyle="bold"
-        android:textSize="20sp"
+        android:textSize="16sp"
         android:textColor="?attr/customTextColor5"
         />
 
@@ -44,23 +44,38 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textColor="?attr/customTextColor"
-        android:layout_margin="15dp"
-        android:hint="Customer ID"/>
+        android:layout_marginTop="35dp"
+        android:layout_marginStart="7dp"
+        android:textColorHint="#CDCBCB"
+        android:backgroundTint="#CDCBCB"
+        android:paddingBottom="25dp"
+        android:layout_marginEnd="7dp"
+        android:hint="User ID"/>
 
     <EditText
+        android:layout_marginTop="10dp"
         android:id="@+id/password"
         android:textColor="?attr/customTextColor"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="15dp"
+        android:layout_marginStart="7dp"
+        android:layout_marginEnd="7dp"
+        android:textColorHint="#CDCBCB"
+        android:backgroundTint="#CDCBCB"
+        android:paddingBottom="25dp"
         android:hint="Password"/>
 
     <EditText
+        android:layout_marginTop="10dp"
         android:textColor="?attr/customTextColor"
         android:id="@+id/wc"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="15dp"
+        android:layout_marginStart="7dp"
+        android:layout_marginEnd="7dp"
+        android:textColorHint="#CDCBCB"
+        android:backgroundTint="#CDCBCB"
+        android:paddingBottom="25dp"
         android:hint="Workplace code"/>
 
     <LinearLayout
@@ -74,15 +89,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            app:buttonTint="@color/myblue"/>
+            app:buttonTint="@color/myblue" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textStyle="bold"
-            android:text="REMEMBER PASSWORD"
-            android:textAllCaps="true"
-            android:textSize="20sp"
+            android:text="REMEMBER  PASSWORD"
+            android:textSize="13sp"
             android:textColor="?attr/customTextColor"
             android:layout_gravity="center_vertical"
             android:paddingStart="8dp"/>
@@ -90,19 +103,18 @@
 
     <androidx.cardview.widget.CardView
         android:id="@+id/login"
-        android:backgroundTint="?attr/customButtonColor"
-        android:layout_margin="10dp"
+        android:backgroundTint="?attr/customButtonColor3"
+        android:layout_margin="7dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:cardCornerRadius="15dp">
+        app:cardCornerRadius="10dp">
 
         <TextView
-            android:textColor="?attr/customTextColor"
-            android:layout_margin="18dp"
+            android:textColor="@color/white"
+            android:layout_margin="10dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="20sp"
-            android:textStyle="bold"
+            android:textSize="18sp"
             android:layout_gravity="center"
             android:text="Log in"/>
 
@@ -112,8 +124,7 @@
         android:layout_margin="18dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="20sp"
-        android:textStyle="bold"
+        android:textSize="16sp"
         android:textColor="?attr/customTextColor"
         android:text="Version: 53"/>
 </LinearLayout>

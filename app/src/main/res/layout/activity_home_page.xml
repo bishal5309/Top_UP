@@ -85,7 +85,6 @@
                             android:textColor="#ACACAC"
                             android:text="EPOS: 1288871"
                             android:layout_weight="0.5" />
-
                         <TextView
                             android:textColor="#ACACAC"
                             android:layout_width="0dp"
@@ -95,7 +94,6 @@
                             android:text="Limit"
                             android:gravity="end"
                             android:layout_weight="0.5" />
-
                     </LinearLayout>
 
                     <!-- Content Area (Your cards and info go here) -->
@@ -191,15 +189,11 @@
                         android:layout_marginLeft="10dp"
                         android:layout_marginRight="10dp"
                         android:layout_marginBottom="15dp"
-                        android:textStyle="bold"
                         android:textSize="18sp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Bangladesh, Bogra, Mubasshira Computer22"/>
-
                 </LinearLayout>
-
-
             </FrameLayout>
         </androidx.cardview.widget.CardView>
 
@@ -211,34 +205,65 @@
             android:gravity="center"
             android:padding="16dp">
 
-            <androidx.appcompat.widget.AppCompatButton
+            <!-- Topup button with separate icon -->
+            <LinearLayout
                 android:id="@+id/btn_top_up"
                 android:layout_width="0dp"
                 android:layout_height="70dp"
                 android:layout_weight="1"
+                android:orientation="horizontal"
+                android:gravity="center"
                 android:background="@drawable/rounded_button_green"
-                android:text="Topup account"
-                android:textColor="@android:color/white"
-                android:drawableLeft="@drawable/cashin"
-                android:padding="12dp"
-                android:textAllCaps="false" />
+                android:padding="12dp">
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/cashin"
+                    android:contentDescription="Topup icon" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Topup account"
+                    android:textColor="@android:color/white"
+                    android:layout_marginStart="8dp"
+                    android:textAllCaps="false"
+                    android:textSize="16sp"/>
+            </LinearLayout>
 
             <View
                 android:layout_width="10dp"
                 android:layout_height="match_parent" />
 
-            <androidx.appcompat.widget.AppCompatButton
+            <!-- Withdraw button with separate icon -->
+            <LinearLayout
                 android:id="@+id/btn_withdraw"
                 android:layout_width="0dp"
                 android:layout_height="70dp"
                 android:layout_weight="1"
+                android:orientation="horizontal"
+                android:gravity="center"
                 android:background="@drawable/rounded_button_blue"
-                android:text="Withdraw funds"
-                android:textColor="@android:color/white"
-                android:drawableLeft="@drawable/cashout"
-                android:padding="12dp"
-                android:textAllCaps="false" />
+                android:padding="12dp">
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/cashout"
+                    android:contentDescription="Withdraw icon" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Withdraw funds"
+                    android:textColor="@android:color/white"
+                    android:layout_marginStart="8dp"
+                    android:textAllCaps="false"
+                    android:textSize="16sp"/>
+            </LinearLayout>
         </LinearLayout>
+
 
 
         <androidx.cardview.widget.CardView

@@ -94,12 +94,30 @@ public class AnimatedStatusView extends View {
 
     private void drawCheckmark(Canvas canvas, float cx, float cy, float radius) {
         float scale = radius / 12f;
-        float boost = 1.05f;
+        float boost = 1.1f;
 
         Path path = new Path();
-        path.moveTo(cx - 5 * scale * boost, cy);
-        path.lineTo(cx - 1 * scale * boost, cy + 4 * scale * boost);
-        path.lineTo(cx + 6 * scale * boost, cy - 4 * scale * boost);
+
+        // Left stroke: short downward line
+        float startX1 = cx - 6 * scale * boost;
+        float startY1 = cy - 1 * scale * boost;
+        float endX1 = cx - 2.5f * scale * boost;
+        float endY1 = cy + 4.5f * scale * boost;
+
+        path.moveTo(startX1, startY1);
+        path.lineTo(endX1, endY1);
+
+        // Right stroke: upward line starting with a gap
+        float startX2 = cx - 0.5f * scale * boost;
+        float startY2 = cy + 2.5f * scale * boost;
+        float endX2 = cx + 6.5f * scale * boost;
+        float endY2 = cy - 4.5f * scale * boost;
+
+        path.moveTo(startX2, startY2);
+        path.lineTo(endX2, endY2);
+
+        paint.setStrokeWidth(6f);
+        paint.setStrokeCap(Paint.Cap.ROUND);
         canvas.drawPath(path, paint);
     }
 }

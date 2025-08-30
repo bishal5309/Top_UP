@@ -1,5 +1,5 @@
 <inset xmlns:android="http://schemas.android.com/apk/res/android"
-    android:insetRight="8dp"> <!-- right margin এর simulation -->
+    android:insetRight="15dp"> <!-- right margin এর simulation -->
 
     <shape android:shape="rectangle">
         <solid android:color="?attr/customSelector"/>

@@ -2,8 +2,12 @@ package com.example.top_up;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.activity.OnBackPressedCallback;
@@ -44,22 +48,22 @@ public class TransactionsActivity extends AppCompatActivity {
             return insets;
         });
 
+        // Dark / Light mode for status bar
         int nightModeFlags =
                 getResources().getConfiguration().uiMode &
                         android.content.res.Configuration.UI_MODE_NIGHT_MASK;
 
         if (nightModeFlags == android.content.res.Configuration.UI_MODE_NIGHT_YES) {
-            getWindow().setStatusBarColor(Color.BLACK);
-            getWindow().getDecorView().setSystemUiVisibility(0);
+            getWindow().setStatusBarColor(Color.parseColor("#112740")); // Dark
+            getWindow().getDecorView().setSystemUiVisibility(0); // White icons
         } else {
-            getWindow().setStatusBarColor(Color.WHITE);
-            getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+            getWindow().setStatusBarColor(Color.parseColor("#FFFFFF")); // Light
+            getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR); // Dark icons
         }
 
         // Initialize views
         tabLayout = findViewById(R.id.tabLayout);
         viewPager = findViewById(R.id.viewPager);
-
         drawerLayout = findViewById(R.id.drawerLayout);
         navigationView = findViewById(R.id.nav_view);
         menuIcon = findViewById(R.id.menu_icon);
@@ -67,7 +71,7 @@ public class TransactionsActivity extends AppCompatActivity {
         navController = new AppNavigationController(this, drawerLayout, navigationView);
         menuIcon.setOnClickListener(v -> navController.openDrawer());
 
-        // Set up ViewPager2 adapter
+        // ViewPager2 Adapter
         viewPager.setAdapter(new FragmentStateAdapter(this) {
             @Override
             public int getItemCount() {
@@ -85,31 +89,87 @@ public class TransactionsActivity extends AppCompatActivity {
             }
         });
 
-        // Attach TabLayout with ViewPager2
+        // Tab colors
+        final int colorSelected = getThemeColor(R.attr.customTextColor);
+        final int colorUnselected = getThemeColor(R.attr.customTextColor5);
+
+        // TabLayoutMediator with custom TextView for each tab
         new TabLayoutMediator(tabLayout, viewPager, (tab, position) -> {
+            LinearLayout tabContainer = new LinearLayout(this);
+            tabContainer.setOrientation(LinearLayout.HORIZONTAL);
+            tabContainer.setGravity(Gravity.CENTER);
+
+            TextView tabText = new TextView(this);
+            tabText.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
+            tabText.setAllCaps(false);
+            tabText.setIncludeFontPadding(false);
+
+            // Set tab text
             switch (position) {
-                case 0: tab.setText("Current session"); break;
-                case 1: tab.setText("Previous"); break;
-                case 2: tab.setText("Period"); break;
+                case 0: tabText.setText("Current session"); break;
+                case 1: tabText.setText("Previous"); break;
+                case 2: tabText.setText("Period"); break;
             }
+
+            // Default color: first tab selected
+            tabText.setTextColor(position == 0 ? colorSelected : colorUnselected);
+
+            tabContainer.addView(tabText);
+            tab.setCustomView(tabContainer);
+
         }).attach();
 
-        // ✅ Back gesture handling for drawer
+        // Listener for tab selection
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                updateTabColor(tab, true, colorSelected, colorUnselected);
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+                updateTabColor(tab, false, colorSelected, colorUnselected);
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+                updateTabColor(tab, true, colorSelected, colorUnselected);
+            }
+        });
+
+        // Back gesture handling for drawer
         getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
                 if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
                     drawerLayout.closeDrawer(GravityCompat.START);
                 } else {
-                    finish(); // Drawer না খোলা থাকলে activity বন্ধ হবে
+                    finish();
                 }
             }
         });
     }
 
+    // Helper: Update tab text color
+    private void updateTabColor(TabLayout.Tab tab, boolean isSelected, int colorSelected, int colorUnselected) {
+        if (tab == null || tab.getCustomView() == null) return;
+        LinearLayout container = (LinearLayout) tab.getCustomView();
+        if (container.getChildCount() > 0) {
+            TextView tabText = (TextView) container.getChildAt(0);
+            tabText.setTextColor(isSelected ? colorSelected : colorUnselected);
+        }
+    }
+
+    // Helper: get theme color
+    private int getThemeColor(int attrRes) {
+        TypedValue typedValue = new TypedValue();
+        getTheme().resolveAttribute(attrRes, typedValue, true);
+        return typedValue.data;
+    }
+
     @Override
     protected void onResume() {
         super.onResume();
-        navController.markCurrentItem(R.id.nav_epos); // navigation item highlight
+        navController.markCurrentItem(R.id.nav_epos);
     }
 }

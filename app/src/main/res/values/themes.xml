@@ -37,7 +37,15 @@
 
 
 
-        <item name="customSelector">#CBCED4</item>
+        <item name="customSelector">#E3E2EB</item>
+
+
+        <item name="btn">#205080</item>
+        <item name="msg">#E2E2E2</item>
+        <item name="as">#E2E2E2</item>
+        <item name="nev">#E8E6E6</item>
+        <item name="mob">#1E4774</item>
+        <item name="nevs">#1E4774</item>
 
 
 //home page----------------------------------------

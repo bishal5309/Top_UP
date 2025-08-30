@@ -127,7 +127,7 @@
                             android:text="436-270-287"
                             android:textColor="?attr/customTextColor"
                             android:textSize="14sp"
-                            android:textStyle="bold"/>
+                            />
                     </LinearLayout>
                 </LinearLayout>
 
@@ -175,7 +175,7 @@
                             android:text="0 ৳"
                             android:textColor="?attr/customTextColor"
                             android:textSize="14sp"
-                            android:textStyle="bold"/>
+                            />
                     </LinearLayout>
                 </LinearLayout>
 
@@ -212,7 +212,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="Deposits received"
-                                android:textColor="#20BF20"
+                                android:textColor="#779f2d"
                                 android:textSize="12sp" />
 
                             <TextView
@@ -222,7 +222,7 @@
                                 android:text="0 ৳"
                                 android:textColor="?attr/customTextColor"
                                 android:textSize="14sp"
-                                android:textStyle="bold" />
+                                 />
                         </LinearLayout>
                     </LinearLayout>
 
@@ -249,7 +249,6 @@
                             android:text="0 ৳"
                             android:textColor="#FF4444"
                             android:textSize="14sp"
-                            android:textStyle="bold"
                             android:layout_gravity="end"/>
                     </LinearLayout>
                 </LinearLayout>

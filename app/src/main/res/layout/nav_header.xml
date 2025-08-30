@@ -3,17 +3,38 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:background="?attr/cardBackgroundColor"
-    >
-    <TextView
-        android:layout_marginTop="50dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginBottom="10dp"
-        android:id="@+id/tvUsername"
+    android:padding="10dp"
+    android:layout_marginTop="36dp"
+    android:background="?attr/nev">
+
+    <RelativeLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="MOBCASH"
-        android:textColor="#4797DD"
-        android:textSize="50sp"
-         />
+        android:layout_height="wrap_content">
+
+
+        <TextView
+            android:id="@+id/tvTU"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="TU"
+            android:textColor="#1E4774"
+            android:textSize="10sp"
+            android:layout_toEndOf="@id/tvUsername"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="2dp"/>
+        <!-- MOBCASH Text -->
+        <TextView
+            android:layout_below="@id/tvTU"
+            android:id="@+id/tvUsername"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="MOBCASH"
+            android:textColor="?attr/mob"
+            android:textSize="30sp"
+            android:textStyle="bold" />
+
+        <!-- TU Text (Trademark style) -->
+
+    </RelativeLayout>
+
 </LinearLayout>

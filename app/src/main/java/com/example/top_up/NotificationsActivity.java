@@ -60,6 +60,18 @@ public class NotificationsActivity extends AppCompatActivity {
             return insets;
         });
 
+        int nightModeFlags =
+                getResources().getConfiguration().uiMode &
+                        android.content.res.Configuration.UI_MODE_NIGHT_MASK;
+
+        if (nightModeFlags == android.content.res.Configuration.UI_MODE_NIGHT_YES) {
+            getWindow().setStatusBarColor(Color.parseColor("#112740")); // Dark
+            getWindow().getDecorView().setSystemUiVisibility(0); // White icons
+        } else {
+            getWindow().setStatusBarColor(Color.parseColor("#FFFFFF")); // Light
+            getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR); // Dark icons
+        }
+
         // Drawer and Navigation
         drawerLayout = findViewById(R.id.drawerLayout);
         navigationView = findViewById(R.id.nav_view);
@@ -307,5 +319,11 @@ public class NotificationsActivity extends AppCompatActivity {
         TypedValue typedValue = new TypedValue();
         getTheme().resolveAttribute(attrRes, typedValue, true);
         return typedValue.data;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        navController.markCurrentItem(R.id.nav_notification);
     }
 }

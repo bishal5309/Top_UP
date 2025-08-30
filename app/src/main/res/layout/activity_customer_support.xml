@@ -5,13 +5,13 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#0F253A"
+    android:background="?attr/cardBackgroundColor"
     android:fitsSystemWindows="true"
     android:orientation="vertical"
     >
 
     <LinearLayout
-        android:background="?customButtonColor2"
+        android:background="?customButtonColor"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
@@ -39,15 +39,12 @@
                 android:text="Customer support"
                 android:textColor="?attr/customTextColor"
                 android:textSize="18sp"
-                android:textStyle="bold"
-                android:layout_marginLeft="15dp" />
-
-
+                android:layout_marginLeft="20dp" />
         </LinearLayout>
 
         <!-- TabLayout with indicator -->
         <com.google.android.material.tabs.TabLayout
-            android:background="?customButtonColor2"
+            android:background="?customButtonColor"
             android:id="@+id/tabLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

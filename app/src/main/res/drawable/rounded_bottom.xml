@@ -1,5 +1,5 @@
 <shape xmlns:android="http://schemas.android.com/apk/res/android">
-    <solid android:color="?attr/customButtonColor2" /> <!-- Card background -->
+    <solid android:color="?attr/customButtonColor" /> <!-- Card background -->
     <corners
         android:bottomLeftRadius="16dp"
         android:bottomRightRadius="16dp"

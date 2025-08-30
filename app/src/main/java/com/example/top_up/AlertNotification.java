@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Handler;
+import android.os.Looper;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,33 +21,35 @@ import com.google.android.material.bottomsheet.BottomSheetDialog;
 public class AlertNotification {
 
     public static void show(Activity activity, String messageText) {
+        if (activity == null || activity.isFinishing()) return;
 
-        // ✅ Use custom style to disable black dim background
         BottomSheetDialog bottomDialog = new BottomSheetDialog(
                 activity,
                 R.style.TransparentBottomSheetDialog
         );
 
-        // Inflate your custom layout
         View view = LayoutInflater.from(activity).inflate(R.layout.alert_box, null);
 
-        // 📝 Set the alert message
+        // Set alert message
         TextView alertMessage = view.findViewById(R.id.alertMessage);
-        alertMessage.setText(messageText);
+        if (alertMessage != null) {
+            alertMessage.setText(messageText);
+        }
 
-        // ❌ Close icon functionality
+        // Close icon functionality
         ImageView closeIcon = view.findViewById(R.id.closeIcon);
-        closeIcon.setOnClickListener(v -> bottomDialog.dismiss());
+        if (closeIcon != null) {
+            closeIcon.setOnClickListener(v -> bottomDialog.dismiss());
+        }
 
-        // 🧮 Convert dp to px for margin
-        int bottomMarginDp = 32;
+        // Convert dp to px
         int bottomMarginPx = (int) TypedValue.applyDimension(
                 TypedValue.COMPLEX_UNIT_DIP,
-                bottomMarginDp,
+                32,
                 activity.getResources().getDisplayMetrics()
         );
 
-        // 📐 Set margins dynamically
+        // Set margins
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT
@@ -54,32 +57,31 @@ public class AlertNotification {
         params.setMargins(10, 0, 10, bottomMarginPx);
         view.setLayoutParams(params);
 
-        // 💡 Set the content view
         bottomDialog.setContentView(view);
 
-        // 🪟 Make dialog window background transparent
+        // Window background transparent
         Window window = bottomDialog.getWindow();
         if (window != null) {
             window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
             window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
         }
 
-        // 🎨 Make bottom sheet background itself transparent
-        View sheet = bottomDialog.getWindow().findViewById(
-                com.google.android.material.R.id.design_bottom_sheet
-        );
+        // Bottom sheet background transparent
+        View sheet = bottomDialog.getWindow() != null ?
+                bottomDialog.getWindow().findViewById(com.google.android.material.R.id.design_bottom_sheet) :
+                null;
         if (sheet != null) {
             sheet.setBackgroundColor(Color.TRANSPARENT);
         }
 
-        // 🚀 Show the dialog
         bottomDialog.show();
 
-        // ⏳ Auto-dismiss after 2 seconds with slide-down animation
-        new Handler().postDelayed(() -> {
-            View sheetView = bottomDialog.getWindow().findViewById(
-                    com.google.android.material.R.id.design_bottom_sheet
-            );
+        // Auto-dismiss with smooth slide-down
+        new Handler(Looper.getMainLooper()).postDelayed(() -> {
+            View sheetView = bottomDialog.getWindow() != null ?
+                    bottomDialog.getWindow().findViewById(com.google.android.material.R.id.design_bottom_sheet) :
+                    null;
+
             if (sheetView != null) {
                 sheetView.animate()
                         .translationY(sheetView.getHeight())
@@ -89,8 +91,8 @@ public class AlertNotification {
                         .withEndAction(bottomDialog::dismiss)
                         .start();
             } else {
-                bottomDialog.dismiss(); // fallback
+                bottomDialog.dismiss();
             }
-        }, 2000); // 2000ms = 2 seconds
+        }, 2000);
     }
 }

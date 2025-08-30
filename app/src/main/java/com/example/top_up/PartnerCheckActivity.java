@@ -42,18 +42,17 @@ public class PartnerCheckActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+        // Dark / Light mode for status bar
         int nightModeFlags =
                 getResources().getConfiguration().uiMode &
                         android.content.res.Configuration.UI_MODE_NIGHT_MASK;
 
         if (nightModeFlags == android.content.res.Configuration.UI_MODE_NIGHT_YES) {
-            // Dark theme / Night mode
-            getWindow().setStatusBarColor(Color.BLACK); // Status bar কালো
-            getWindow().getDecorView().setSystemUiVisibility(0); // আইকন হোয়াইট
+            getWindow().setStatusBarColor(Color.parseColor("#112740")); // Dark
+            getWindow().getDecorView().setSystemUiVisibility(0); // White icons
         } else {
-            // Light theme
-            getWindow().setStatusBarColor(Color.WHITE); // Status bar হোয়াইট
-            getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR); // আইকন কালো
+            getWindow().setStatusBarColor(Color.parseColor("#FFFFFF")); // Light
+            getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR); // Dark icons
         }
 
 

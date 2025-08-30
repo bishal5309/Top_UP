@@ -103,7 +103,7 @@
 
     <androidx.cardview.widget.CardView
         android:id="@+id/login"
-        android:backgroundTint="?attr/customButtonColor3"
+        android:backgroundTint="?attr/btn"
         android:layout_margin="7dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

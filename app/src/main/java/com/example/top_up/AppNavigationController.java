@@ -3,8 +3,13 @@ package com.example.top_up;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.drawable.GradientDrawable;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
+import android.widget.FrameLayout;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.SwitchCompat;
@@ -63,7 +68,54 @@ public class AppNavigationController {
             drawerLayout.closeDrawer(GravityCompat.START);
             return true;
         });
+
+        // ✅ Add badge to Customer Support menu item
+        navigationView.post(() -> {
+            View actionView = navigationView.getMenu().findItem(R.id.nav_cst).getActionView();
+            if (actionView == null) {
+                // Badge TextView
+                TextView badge = new TextView(activity);
+                badge.setText("3");
+                badge.setTextColor(activity.getResources().getColor(android.R.color.white));
+                badge.setTextSize(14f);
+                badge.setGravity(Gravity.CENTER);
+
+                int size = dpToPx(25);
+                badge.setWidth(size);
+                badge.setHeight(size);
+
+                GradientDrawable bg = new GradientDrawable();
+                bg.setColor(0xFF4CAF50);
+                bg.setCornerRadius(size / 2f);
+                badge.setBackground(bg);
+
+                // FrameLayout container
+                FrameLayout frame = new FrameLayout(activity);
+                FrameLayout.LayoutParams badgeParams = new FrameLayout.LayoutParams(
+                        FrameLayout.LayoutParams.WRAP_CONTENT,
+                        FrameLayout.LayoutParams.WRAP_CONTENT
+                );
+                badgeParams.gravity = Gravity.CENTER_VERTICAL | Gravity.START;
+                badgeParams.setMargins(dpToPx(0), 0, 65, 0); // Left margin কমানো → badge আরও left
+                badge.setLayoutParams(badgeParams);
+
+                frame.addView(badge);
+
+                navigationView.getMenu().findItem(R.id.nav_cst).setActionView(frame);
+            }
+        });
+
+
+
+
+
     }
+
+    private int dpToPx(int dp) {
+        float density = activity.getResources().getDisplayMetrics().density;
+        return (int) (dp * density + 0.5f);
+    }
+
 
     private void setupDarkThemeSwitch() {
         navigationView.post(() -> {

@@ -18,5 +18,11 @@
         <attr name="tu" format="color" />
         <attr name="wd" format="color" />
         <attr name="pg" format="color" />
+        <attr name="btn" format="color" />
+        <attr name="msg" format="color" />
+        <attr name="as" format="color" />
+        <attr name="nev" format="color" />
+        <attr name="mob" format="color" />
+        <attr name="nevs" format="color" />
     </declare-styleable>
 </resources>

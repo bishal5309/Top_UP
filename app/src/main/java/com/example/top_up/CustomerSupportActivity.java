@@ -1,10 +1,9 @@
 package com.example.top_up;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
+import android.util.TypedValue;
 import android.view.Gravity;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -15,8 +14,8 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.Fragment;
-import androidx.viewpager2.widget.ViewPager2;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
+import androidx.viewpager2.widget.ViewPager2;
 
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
@@ -25,7 +24,7 @@ public class CustomerSupportActivity extends AppCompatActivity {
 
     private ViewPager2 viewPager;
     private TabLayout tabLayout;
-    ImageView back;
+    private ImageView back;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,63 +38,81 @@ public class CustomerSupportActivity extends AppCompatActivity {
             return insets;
         });
 
-        int nightModeFlags =
-                getResources().getConfiguration().uiMode &
-                        android.content.res.Configuration.UI_MODE_NIGHT_MASK;
-
-        if (nightModeFlags == android.content.res.Configuration.UI_MODE_NIGHT_YES) {
-            // Dark theme
-            getWindow().setStatusBarColor(Color.parseColor("#112740")); // Dark Gray/Black
-            getWindow().getDecorView().setSystemUiVisibility(0); // হোয়াইট আইকন
-        } else {
-            // Light theme
-            getWindow().setStatusBarColor(Color.parseColor("#FFFFFF")); // হালকা কাস্টম হোয়াইট
-            getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);} // কালো আইকন
-
         // Initialize views
         viewPager = findViewById(R.id.viewPager);
         tabLayout = findViewById(R.id.tabLayout);
         back = findViewById(R.id.back);
 
         back.setOnClickListener(view -> {
-            Intent intent = new Intent(CustomerSupportActivity.this,home_page.class);
-            startActivity(intent);
+            startActivity(new Intent(CustomerSupportActivity.this, home_page.class));
             finish();
         });
 
         // Setup fragments
         FragmentStateAdapter adapter = new FragmentStateAdapter(this) {
             @Override
-            public int getItemCount() {
-                return 2;
-            }
+            public int getItemCount() { return 2; }
 
             @Override
             public Fragment createFragment(int position) {
                 return position == 0 ? new SupportChatFragment() : new FAQFragment();
             }
         };
-
         viewPager.setAdapter(adapter);
+
+        // Get theme colors
+        final int colorSelected = getThemeColor(R.attr.customTextColor);
+        final int colorUnselected = getThemeColor(R.attr.customTextColor5);
 
         // Attach TabLayout with ViewPager2
         new TabLayoutMediator(tabLayout, viewPager, (tab, position) -> {
             TextView tabText = new TextView(this);
             tabText.setText(position == 0 ? "Support chat" : "FAQ");
             tabText.setAllCaps(false);
-            tabText.setTextSize(16);
-            tabText.setTextColor(Color.parseColor("#FFFFFF")); // Hex color code
-
+            tabText.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
             tabText.setGravity(Gravity.CENTER);
 
-            // Ensure full width so gravity works
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.MATCH_PARENT,
                     LinearLayout.LayoutParams.WRAP_CONTENT
             );
             tabText.setLayoutParams(params);
 
+            // Default color
+            tabText.setTextColor(position == 0 ? colorSelected : colorUnselected);
+
             tab.setCustomView(tabText);
         }).attach();
+
+        // Tab selection listener to change colors dynamically
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                updateTabColor(tab, true, colorSelected, colorUnselected);
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+                updateTabColor(tab, false, colorSelected, colorUnselected);
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+                updateTabColor(tab, true, colorSelected, colorUnselected);
+            }
+        });
+    }
+
+    private void updateTabColor(TabLayout.Tab tab, boolean isSelected, int colorSelected, int colorUnselected) {
+        if (tab == null || tab.getCustomView() == null) return;
+        TextView tabText = (TextView) tab.getCustomView();
+        tabText.setTextColor(isSelected ? colorSelected : colorUnselected);
+    }
+
+    // Helper to get color from theme
+    private int getThemeColor(int attrRes) {
+        TypedValue typedValue = new TypedValue();
+        getTheme().resolveAttribute(attrRes, typedValue, true);
+        return typedValue.data;
     }
 }

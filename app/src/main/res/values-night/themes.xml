@@ -32,12 +32,20 @@
         <item name="customTextColor4">@color/white</item>
         <item name="customTextColor5">#746F6F</item>
 
-        <item name="customButtonColor">#1d334a</item>
+        <item name="customButtonColor">#1D334A</item>
         <item name="customButtonColor2">#1d334a</item>
         <item name="customButtonColor3">#1d334a</item>
 
         <item name="customIconTint">#C5CBD8</item>
         <item name="customSelector">#193350</item>
+
+
+        <item name="btn">#4495E4</item>
+        <item name="msg">#283E53</item>
+        <item name="as">#1D334A</item>
+        <item name="nev">#273D54</item>
+        <item name="mob">#4691DE</item>
+        <item name="nevs">#4596E6</item>
 
 //home page =========================
 

@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:background="?attr/cardBackgroundColor"
+        android:background="?attr/customButtonColor"
         android:fitsSystemWindows="true">
 
         <!-- Toolbar -->
@@ -22,22 +22,23 @@
             android:orientation="horizontal"
             android:padding="10dp"
             android:gravity="center_vertical"
-            android:background="?attr/cardBackgroundColor">
+            android:background="?attr/customButtonColor">
 
             <ImageView
+                app:tint="?attr/customIconTint"
                 android:id="@+id/menu_icon"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:scaleType="fitCenter"
                 android:src="@drawable/menu"
-                android:contentDescription="Menu"
-                app:tint="?attr/customIconTint" />
+                android:contentDescription="Menu" />
 
             <TextView
-                android:layout_marginStart="16dp"
+                android:layout_marginStart="20dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="My account"
-                android:textSize="20sp"
+                android:text="Partner chech"
+                android:textSize="18sp"
                 android:textStyle="bold"
                 android:textColor="?attr/customTextColor" />
         </LinearLayout>
@@ -46,7 +47,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="?attr/customTextColor5"
+            android:background="?attr/cardBackgroundColor"
             android:orientation="vertical">
 
             <EditText
@@ -64,16 +65,16 @@
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_send"
                 android:layout_width="match_parent"
-                android:layout_height="55dp"
+                android:layout_height="50dp"
                 android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp"
-                android:backgroundTint="?attr/cardBackgroundColor"
+                android:backgroundTint="?attr/btn"
                 android:text="Send"
                 android:textAlignment="center"
                 android:textAllCaps="false"
-                android:textColor="?attr/customTextColor"
-                android:textSize="16sp"
-                app:cornerRadius="12dp" />
+                android:textColor="@color/white"
+                android:textSize="13sp"
+                app:cornerRadius="10dp" />
         </LinearLayout>
     </LinearLayout>
 

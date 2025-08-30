@@ -4,6 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/drawerLayout"
     android:layout_width="match_parent"
+    android:background="?attr/cardBackgroundColor"
     android:layout_height="match_parent">
 
     <!-- Main Content -->
@@ -19,7 +20,7 @@
             android:layout_width="match_parent"
             android:layout_height="56dp"
             android:orientation="horizontal"
-            android:background="?attr/customButtonColor2"
+            android:background="?attr/customButtonColor"
             android:paddingHorizontal="16dp"
             android:gravity="center_vertical">
 
@@ -58,13 +59,17 @@
             android:id="@+id/tabLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="?attr/customButtonColor2"
+            android:background="?attr/customButtonColor"
             app:tabIndicatorColor="#284E72"
             app:tabSelectedTextColor="?attr/customTextColor"
             app:tabTextColor="?attr/customTextColor5"
             app:tabIndicatorHeight="3dp"
             app:tabGravity="fill"
             app:tabMode="fixed" />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#CCCCCC"/>
 
         <!-- ViewPager2 -->
         <androidx.viewpager2.widget.ViewPager2

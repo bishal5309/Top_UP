@@ -49,7 +49,7 @@
         app:cornerRadius="12dp"
         android:textAllCaps="false"
         android:textColor="?attr/customTextColor"
-        android:backgroundTint="?attr/customButtonColor" />
+        android:backgroundTint="?attr/btn" />
 
     <!-- Hidden Loading Container -->
     <LinearLayout

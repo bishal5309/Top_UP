@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
     <!-- Selected item text color -->
-    <item android:color="#4596E6" android:state_checked="true" />
+    <item android:color="?attr/nevs" android:state_checked="true" />
 
     <!-- Default text color based on theme -->
     <item android:color="?attr/customTextColor" />

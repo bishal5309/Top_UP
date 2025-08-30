@@ -19,13 +19,13 @@
         <item name="android:textColor">#FFFFFF</item>
 
         <!-- Custom Attributes -->
-        <item name="cardBackgroundColor">@color/white</item>
 
-        <item name="cardBackgroundColor2">#EEEFF1</item>
-        <item name="cardBackgroundColor3">#D8D8D8</item>
+
+        <item name="cardBackgroundColor2">#F2F2F2</item>
+
         <item name="cardBackgroundColor4">#F1EFF1</item>
 
-        <item name="customTextColor">#000000</item>
+
         <item name="customTextColor2">#000000</item>
         <item name="customTextColor3">#000000</item>
         <item name="customTextColor4">#746F6F</item>
@@ -35,9 +35,25 @@
         <item name="customButtonColor2">#CCDEF8</item>
         <item name="customButtonColor3">#1d334a</item>
 
-        <item name="customIconTint">#000000</item>
+
 
         <item name="customSelector">#CBCED4</item>
+
+
+//home page----------------------------------------
+        <item name="tu">#779f2d</item>
+        <item name="wd">#2196F3</item>
+        <item name="customIconTint">#000000</item>
+        <item name="customTextColor">#000000</item>
+        <item name="cardBackgroundColor">#EEEFF1</item>
+        <item name="cardBackgroundColor3">#D8D8D8</item>
+        <item name="pg">#E4E2E4</item>
+
+
+        ///notification new fragment--------------------
+        <item name="ncardBackgroundColor">#FFFFFF</item>
+
+
 
 
 

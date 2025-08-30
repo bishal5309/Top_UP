@@ -11,7 +11,7 @@
         android:id="@+id/main"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="?attr/cardBackgroundColor">
+        android:background="?attr/ncardBackgroundColor">
 
         <!-- Top Menu Bar -->
         <LinearLayout
@@ -19,27 +19,29 @@
             android:layout_width="match_parent"
             android:layout_height="56dp"
             android:orientation="horizontal"
-            android:background="?attr/cardBackgroundColor"
+            android:background="?attr/ncardBackgroundColor"
             android:paddingHorizontal="16dp"
             android:gravity="center_vertical"
             app:layout_constraintTop_toTopOf="parent">
 
             <ImageView
+                app:tint="?attr/customIconTint"
                 android:id="@+id/menu_icon"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
+                android:scaleType="fitCenter"
                 android:src="@drawable/menu"
-                app:tint="?attr/customIconTint"/>
+                android:contentDescription="Menu" />
 
             <TextView
                 android:id="@+id/titleText"
-                android:layout_marginLeft="10dp"
+                android:layout_marginLeft="12dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Notifications"
                 android:textColor="?attr/customTextColor"
                 android:textSize="18sp"
-                android:textStyle="bold"/>
+                />
 
             <View
                 android:layout_width="0dp"
@@ -48,8 +50,8 @@
 
             <ImageView
                 android:id="@+id/clockIcon"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
                 android:layout_marginEnd="8dp"
                 android:src="@drawable/ic_clock"
                 app:tint="?attr/customIconTint"/>
@@ -83,14 +85,14 @@
                 android:layout_height="16dp"
                 android:src="@drawable/ic_clock"
                 android:layout_marginEnd="6dp"
-                app:tint="@android:color/white" />
+                app:tint="?attr/customIconTint" />
 
             <TextView
                 android:id="@+id/dateRangeText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="18 August 2025 - 24 August 2025"
-                android:textColor="@android:color/white"
+                android:textColor="?attr/customTextColor"
                 android:textSize="14sp" />
 
             <ImageView
@@ -99,7 +101,7 @@
                 android:layout_height="16dp"
                 android:src="@drawable/ic_close"
                 android:layout_marginStart="8dp"
-                app:tint="@android:color/white" />
+                app:tint="?attr/customIconTint" />
         </LinearLayout>
 
         <!-- TabLayout -->
@@ -107,7 +109,7 @@
             android:id="@+id/tabLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="?attr/cardBackgroundColor"
+            android:background="?attr/ncardBackgroundColor"
             app:tabIndicatorColor="#284E72"
             app:tabSelectedTextColor="?attr/customTextColor"
             app:tabTextColor="?attr/customTextColor5"

@@ -21,10 +21,9 @@
         <item name="android:textColor">#FFFFFF</item>
 
         <!-- Custom Attributes -->
-        <item name="cardBackgroundColor">#112740</item>
 
-        <item name="cardBackgroundColor2">#283C54</item>
-        <item name="cardBackgroundColor3">#405268</item>
+        <item name="cardBackgroundColor2">#283E53</item>
+        <item name="cardBackgroundColor3">#415168</item>
         <item name="cardBackgroundColor4">#112740</item>
 
         <item name="customTextColor">#FFFFFF</item>
@@ -38,9 +37,20 @@
         <item name="customButtonColor3">#1d334a</item>
 
         <item name="customIconTint">#C5CBD8</item>
-
         <item name="customSelector">#193350</item>
 
+//home page =========================
+
+        <item name="tu">#34B348</item>
+        <item name="wd">#4495E4</item>
+        <item name="pg">#112740</item>
+        <item name="cardBackgroundColor">#112740</item>
+
+        //notification ===============
+        <item name="ncardBackgroundColor">#1d334a</item>
+
+
+        #283E53
     </style>
 
 

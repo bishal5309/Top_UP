@@ -1,10 +1,12 @@
 package com.example.top_up;
 
+import android.animation.ObjectAnimator;
 import android.app.Dialog;
-import android.content.Context;
 import android.graphics.Color;
+import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,10 +15,12 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.CalendarView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.activity.OnBackPressedCallback;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.GravityCompat;
@@ -25,14 +29,9 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.viewpager2.widget.ViewPager2;
 
-import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
-import android.animation.ObjectAnimator;
-import android.widget.LinearLayout;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -43,107 +42,159 @@ public class NotificationsActivity extends AppCompatActivity {
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
     private AppNavigationController navController;
-    private ImageView menuIcon,refreshIcon,clockIcon;
     private ObjectAnimator rotateAnimator;
-    private boolean isFetching = false; // track server request status
+    private boolean isFetching = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // Enable edge-to-edge display
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_notifications);
 
-        // ✅ Edge-to-edge handling
+        // Handle system bar insets
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
 
-        int nightModeFlags =
-                getResources().getConfiguration().uiMode &
-                        android.content.res.Configuration.UI_MODE_NIGHT_MASK;
-
-        if (nightModeFlags == android.content.res.Configuration.UI_MODE_NIGHT_YES) {
-            // Dark theme
-            getWindow().setStatusBarColor(Color.parseColor("#112740")); // Dark Gray/Black
-            getWindow().getDecorView().setSystemUiVisibility(0); // হোয়াইট আইকন
-        } else {
-            // Light theme
-            getWindow().setStatusBarColor(Color.parseColor("#FFFFFF")); // হালকা কাস্টম হোয়াইট
-            getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR); // কালো আইকন
-        }
-
-        // ✅ Drawer & Navigation
+        // Drawer and Navigation
         drawerLayout = findViewById(R.id.drawerLayout);
         navigationView = findViewById(R.id.nav_view);
-        menuIcon = findViewById(R.id.menu_icon);
-        clockIcon = findViewById(R.id.clockIcon);
-        refreshIcon = findViewById(R.id.refreshIcon);
-
-
-
-
-        refreshIcon.setOnClickListener(view -> {
-            if (!isFetching) {
-                // ✅ Start spinner
-                rotateAnimator = ObjectAnimator.ofFloat(view, "rotation", 0f, 360f);
-                rotateAnimator.setDuration(1000);
-                rotateAnimator.setRepeatCount(ObjectAnimator.INFINITE);
-                rotateAnimator.start();
-
-                isFetching = true;
-
-                // ✅ Simulate fetching notifications from server
-                fetchNotificationsFromServer();
-            } else {
-                // Already fetching, ignore click or show a message
-            }
-        });
-
-
-        clockIcon.setOnClickListener(view -> {
-            showBottomPeriodDialog();
-        });
-
-
-
-
-
         navController = new AppNavigationController(this, drawerLayout, navigationView);
 
-        if (menuIcon != null) {
-            menuIcon.setOnClickListener(v -> navController.openDrawer());
-        }
-
-        // ✅ Tabs + ViewPager
+        // Tabs and ViewPager2
         TabLayout tabLayout = findViewById(R.id.tabLayout);
         ViewPager2 viewPager = findViewById(R.id.viewPager);
 
         NotificationsPagerAdapter adapter = new NotificationsPagerAdapter(this);
         viewPager.setAdapter(adapter);
 
+        // Get colors from theme (dark/light aware)
+        final int colorSelected = getThemeColor(R.attr.customTextColor);
+        final int colorUnselected = getThemeColor(R.attr.customTextColor5);
+
+        // Notification count array, only New tab used, default 0
+        final int[] notificationCounts = {0};
+
+        // Set up tabs with custom TextView and badge
         new TabLayoutMediator(tabLayout, viewPager, (tab, position) -> {
-            tab.setText(position == 0 ? "New" : "Read");
+            LinearLayout tabContainer = new LinearLayout(this);
+            tabContainer.setOrientation(LinearLayout.HORIZONTAL);
+            tabContainer.setGravity(Gravity.CENTER);
+
+            TextView tabText = new TextView(this);
+            tabText.setText(position == 0 ? "New" : "Read");
+            tabText.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14); // bigger text
+            tabText.setAllCaps(false);
+            tabText.setIncludeFontPadding(false);
+            tabContainer.addView(tabText);
+
+            if (position == 0) {
+                // Badge for New tab
+                TextView badge = new TextView(this);
+                badge.setText(String.valueOf(notificationCounts[position]));
+                badge.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
+                badge.setTextColor(getResources().getColor(android.R.color.white));
+                badge.setGravity(Gravity.CENTER);
+                badge.setMinWidth(dpToPx(20));
+                badge.setHeight(dpToPx(20));
+
+                GradientDrawable bg = new GradientDrawable();
+                bg.setColor(getThemeColor(R.attr.customTextColor5));
+                bg.setCornerRadius(dpToPx(10));
+                badge.setBackground(bg);
+
+                LinearLayout.LayoutParams badgeParams = new LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.WRAP_CONTENT,
+                        LinearLayout.LayoutParams.WRAP_CONTENT
+                );
+                badgeParams.leftMargin = dpToPx(4);
+                badge.setLayoutParams(badgeParams);
+
+                tabContainer.addView(badge);
+            }
+
+            tab.setCustomView(tabContainer);
+
+            // Default color: first tab selected
+            if (position == 0) {
+                tabText.setTextColor(colorSelected);
+            } else {
+                tabText.setTextColor(colorUnselected);
+            }
+
         }).attach();
 
-        // ✅ Back gesture for drawer
+        // Listener to dynamically handle selected/unselected tab colors
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                updateTabColor(tab, true, colorSelected, colorUnselected);
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+                updateTabColor(tab, false, colorSelected, colorUnselected);
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+                updateTabColor(tab, true, colorSelected, colorUnselected);
+            }
+        });
+
+        // Drawer menu icon click
+        findViewById(R.id.menu_icon).setOnClickListener(v -> navController.openDrawer());
+
+        // Refresh icon click
+        findViewById(R.id.refreshIcon).setOnClickListener(view -> {
+            if (!isFetching) {
+                rotateAnimator = ObjectAnimator.ofFloat(view, "rotation", 0f, 360f);
+                rotateAnimator.setDuration(1000);
+                rotateAnimator.setRepeatCount(ObjectAnimator.INFINITE);
+                rotateAnimator.start();
+                isFetching = true;
+                fetchNotificationsFromServer();
+            }
+        });
+
+        // Clock icon click: show period dialog
+        findViewById(R.id.clockIcon).setOnClickListener(view -> showBottomPeriodDialog());
+
+        // Handle back gesture for drawer
         getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
                 if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
                     drawerLayout.closeDrawer(GravityCompat.START);
-                } else {
                 }
             }
         });
     }
 
+    // Update tab text color dynamically
+    private void updateTabColor(TabLayout.Tab tab, boolean isSelected, int colorSelected, int colorUnselected) {
+        if (tab == null || tab.getCustomView() == null) return;
+        LinearLayout container = (LinearLayout) tab.getCustomView();
+        if (container.getChildCount() > 0) {
+            TextView tabText = (TextView) container.getChildAt(0);
+            tabText.setTextColor(isSelected ? colorSelected : colorUnselected);
+        }
+    }
 
+    // Helper: dp to px conversion
+    private int dpToPx(int dp) {
+        float density = getResources().getDisplayMetrics().density;
+        return (int) (dp * density + 0.5f);
+    }
 
-
+    // Period selection dialog with calendar show/hide
     private void showBottomPeriodDialog() {
-        Dialog dialog = new Dialog(NotificationsActivity.this);
-        View contentView = LayoutInflater.from(NotificationsActivity.this).inflate(R.layout.dialog_select_period, null);
+        Dialog dialog = new Dialog(this);
+        View contentView = LayoutInflater.from(this).inflate(R.layout.dialog_select_period, null);
         dialog.setContentView(contentView);
 
         Window window = dialog.getWindow();
@@ -154,59 +205,83 @@ public class NotificationsActivity extends AppCompatActivity {
             window.getAttributes().windowAnimations = R.anim.dialog_animation;
         }
 
-        // Period options
         TextView day = contentView.findViewById(R.id.dayOption);
         TextView week = contentView.findViewById(R.id.weekOption);
         TextView month = contentView.findViewById(R.id.monthOption);
         TextView period = contentView.findViewById(R.id.periodOption);
 
-        // Containers
         LinearLayout periodOptionsContainer = contentView.findViewById(R.id.periodOptionsContainer);
         LinearLayout calendarContainer = contentView.findViewById(R.id.calendarContainer);
 
-        // CalendarView and Next button
         CalendarView calendarView = contentView.findViewById(R.id.calendarView);
         Button btnNext = contentView.findViewById(R.id.btnNext);
 
-        View.OnClickListener listener = v -> {
-            String selected = ((TextView) v).getText().toString();
-            Toast.makeText(NotificationsActivity.this, "Selected: " + selected, Toast.LENGTH_SHORT).show();
+        TextView dateRangeText = findViewById(R.id.dateRangeText);
+        LinearLayout dateRangeContainer = findViewById(R.id.dateRangeContainer);
 
-            // Hide options and show calendar
-            periodOptionsContainer.setVisibility(View.GONE);
-            calendarContainer.setVisibility(View.VISIBLE);
-        };
-
-        /*day.setOnClickListener(listener);
-        week.setOnClickListener(listener);
-        month.setOnClickListener(listener);
-        period.setOnClickListener(listener);*/
-
+        // Close button
         ImageView closeDateRange = findViewById(R.id.closeDateRange);
-        closeDateRange.setOnClickListener(v -> {
-            findViewById(R.id.dateRangeContainer).setVisibility(View.GONE);
+        closeDateRange.setOnClickListener(v -> dateRangeContainer.setVisibility(View.GONE));
+
+        // Day click → today
+        day.setOnClickListener(v -> {
+            Calendar cal = Calendar.getInstance();
+            SimpleDateFormat sdf = new SimpleDateFormat("dd MMMM yyyy", Locale.getDefault());
+            String range = sdf.format(cal.getTime());
+            dateRangeText.setText(range);
+            dateRangeContainer.setVisibility(View.VISIBLE);
+            dialog.dismiss();
         });
 
-        // Optional: handle calendar date selection or Next button
+        // Week click → current week
+        week.setOnClickListener(v -> {
+            Calendar cal = Calendar.getInstance();
+            cal.set(Calendar.DAY_OF_WEEK, cal.getFirstDayOfWeek());
+            SimpleDateFormat sdf = new SimpleDateFormat("dd MMMM yyyy", Locale.getDefault());
+            String start = sdf.format(cal.getTime());
+            cal.add(Calendar.DAY_OF_WEEK, 6); // 7-day week
+            String end = sdf.format(cal.getTime());
+            String range = start + " - " + end;
+            dateRangeText.setText(range);
+            dateRangeContainer.setVisibility(View.VISIBLE);
+            dialog.dismiss();
+        });
+
+        // Month click → current month
+        month.setOnClickListener(v -> {
+            Calendar cal = Calendar.getInstance();
+            cal.set(Calendar.DAY_OF_MONTH, 1);
+            SimpleDateFormat sdf = new SimpleDateFormat("dd MMMM yyyy", Locale.getDefault());
+            String start = sdf.format(cal.getTime());
+            cal.set(Calendar.DAY_OF_MONTH, cal.getActualMaximum(Calendar.DAY_OF_MONTH));
+            String end = sdf.format(cal.getTime());
+            String range = start + " - " + end;
+            dateRangeText.setText(range);
+            dateRangeContainer.setVisibility(View.VISIBLE);
+            dialog.dismiss();
+        });
+
+        // Period click → show calendar
+        period.setOnClickListener(v -> {
+            periodOptionsContainer.setVisibility(View.GONE);
+            calendarContainer.setVisibility(View.VISIBLE);
+        });
+
+        // Next button → calendar date selection
         btnNext.setOnClickListener(v -> {
             long selectedDate = calendarView.getDate();
-            Calendar calendar = Calendar.getInstance();
-            calendar.setTimeInMillis(selectedDate);
-
+            Calendar cal = Calendar.getInstance();
+            cal.setTimeInMillis(selectedDate);
             SimpleDateFormat sdf = new SimpleDateFormat("dd MMMM yyyy", Locale.getDefault());
-            String startDate = sdf.format(calendar.getTime());
+            String startDate = sdf.format(cal.getTime());
 
-            Calendar endCalendar = (Calendar) calendar.clone();
-            endCalendar.add(Calendar.DAY_OF_MONTH, 6); // 7-day range
-            String endDate = sdf.format(endCalendar.getTime());
+            Calendar endCal = (Calendar) cal.clone();
+            endCal.add(Calendar.DAY_OF_MONTH, 6); // 7-day range for calendar
+            String endDate = sdf.format(endCal.getTime());
 
-            String rangeText = startDate + " - " + endDate;
-
-            TextView dateRangeText = findViewById(R.id.dateRangeText);
-            LinearLayout dateRangeContainer = findViewById(R.id.dateRangeContainer);
-            dateRangeText.setText(rangeText);
+            String range = startDate + " - " + endDate;
+            dateRangeText.setText(range);
             dateRangeContainer.setVisibility(View.VISIBLE);
-
             dialog.dismiss();
         });
 
@@ -214,33 +289,23 @@ public class NotificationsActivity extends AppCompatActivity {
     }
 
 
-
-
-
-    // Example server fetch simulation
+    // Simulate server fetch for notifications
     private void fetchNotificationsFromServer() {
-        // Here you call your server API asynchronously
-        // For demo, we'll just simulate delay with Handler
-        new android.os.Handler().postDelayed(() -> {
-            // Server response received → stop spinner
-            stopRefreshAnimation();
-
-            // TODO: Update notifications UI here
-
-        }, 2000); // simulate 2 seconds server delay
+        new android.os.Handler().postDelayed(this::stopRefreshAnimation, 2000);
     }
 
+    // Stop refresh spinner
     private void stopRefreshAnimation() {
         if (rotateAnimator != null && rotateAnimator.isRunning()) {
-            rotateAnimator.end(); // stop rotation
+            rotateAnimator.end();
         }
-        isFetching = false; // reset fetching status
+        isFetching = false;
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        // Highlight current menu item in navigation drawer
-        navController.markCurrentItem(R.id.nav_notification); // ensure this ID exists in drawer_menu.xml
+    // Get color from theme attribute (dark/light aware)
+    private int getThemeColor(int attrRes) {
+        TypedValue typedValue = new TypedValue();
+        getTheme().resolveAttribute(attrRes, typedValue, true);
+        return typedValue.data;
     }
 }

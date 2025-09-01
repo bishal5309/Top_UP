@@ -72,7 +72,7 @@ public class AppNavigationController {
             if (actionView == null) {
                 // Badge TextView
                 TextView badge = new TextView(activity);
-                badge.setText("3");
+                badge.setText("0");
                 badge.setTextColor(activity.getResources().getColor(android.R.color.white));
                 badge.setTextSize(14f);
                 badge.setGravity(Gravity.CENTER);
@@ -93,7 +93,7 @@ public class AppNavigationController {
                         FrameLayout.LayoutParams.WRAP_CONTENT
                 );
                 badgeParams.gravity = Gravity.CENTER_VERTICAL | Gravity.START;
-                badgeParams.setMargins(dpToPx(0), 0, 65, 0); // Left margin কমানো → badge আরও left
+                badgeParams.setMargins(dpToPx(0), 0, 50, 0); // Left margin কমানো → badge আরও left
                 badge.setLayoutParams(badgeParams);
 
                 frame.addView(badge);

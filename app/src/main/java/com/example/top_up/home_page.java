@@ -4,16 +4,22 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.style.ForegroundColorSpan;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
@@ -25,14 +31,17 @@ import android.widget.Toast;
 import androidx.activity.OnBackPressedCallback;
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.content.res.AppCompatResources;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.cardview.widget.CardView;
+import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.GravityCompat;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.navigation.NavigationView;
 
 public class home_page extends AppCompatActivity {
@@ -114,19 +123,53 @@ public class home_page extends AppCompatActivity {
         });
 
         exit = findViewById(R.id.exit);
-        exit.setOnClickListener(v ->
-                new AlertDialog.Builder(home_page.this)
-                        .setTitle("Log Out")
-                        .setIcon(R.drawable.ticket)
-                        .setMessage("Are you sure you want to Log out?")
-                        .setPositiveButton("Yes", (dialog, which) -> {
-                            Intent intent = new Intent(home_page.this, MainActivity.class); // Replace with your target activity
-                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK); // Optional: clears back stack
-                            startActivity(intent);
-                        })
-                        .setNegativeButton("No", null)
-                        .show()
-        );
+        exit.setOnClickListener(v -> {
+            // Detect current theme
+            boolean isDarkMode = (home_page.this.getResources().getConfiguration().uiMode
+                    & Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES;
+
+            // Create a TextView for the message
+            TextView messageView = new TextView(home_page.this);
+            messageView.setText("When logging out of the account all related info will be deleted from the device. Continue?");
+            messageView.setTextSize(16);
+            messageView.setPadding(65, 45, 0, 0);
+            messageView.setLineSpacing(4f, 1f);
+            messageView.setTextColor(isDarkMode ? Color.parseColor("#FFFFFF") : Color.parseColor("#444444"));
+
+            // Create and show dialog
+            androidx.appcompat.app.AlertDialog dialog = new MaterialAlertDialogBuilder(home_page.this)
+                    .setTitle("Log Out")
+                    .setView(messageView)
+                    .setPositiveButton("Yes", (d, which) -> {
+                        Intent intent = new Intent(home_page.this, MainActivity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        startActivity(intent);
+                    })
+                    .setNegativeButton("No", null)
+                    .create();
+
+            dialog.show();
+
+            // Set background color
+            int backgroundColor = isDarkMode
+                    ? Color.parseColor("#1d334a")
+                    : Color.parseColor("#FFFFFF");
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(backgroundColor));
+
+            // Set title text color
+            TextView titleView = dialog.findViewById(androidx.appcompat.R.id.alertTitle);
+            if (titleView != null) {
+                titleView.setTextColor(isDarkMode ? Color.parseColor("#FFFFFF") : Color.parseColor("#000000"));
+            }
+
+            // Set button text colors
+            Button positiveButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
+            Button negativeButton = dialog.getButton(AlertDialog.BUTTON_NEGATIVE);
+            int buttonTextColor = isDarkMode ? Color.parseColor("#FFFFFF") : Color.parseColor("#000000");
+
+            if (positiveButton != null) positiveButton.setTextColor(buttonTextColor);
+            if (negativeButton != null) negativeButton.setTextColor(buttonTextColor);
+        });
 
         btn_top_up = findViewById(R.id.btn_top_up);
         btn_top_up.setOnClickListener(v -> showTopUpDialog());

@@ -71,8 +71,6 @@ public class PartnerCheckActivity extends AppCompatActivity {
             String userId = edit_user_id.getText().toString().trim();
             if (userId.isEmpty()) {
                 edit_user_id.setError("Please enter Player ID");
-            } else {
-                AlertNotification.show(PartnerCheckActivity.this, "Submitting: " + userId);
             }
 
             edit_user_id.setText("");

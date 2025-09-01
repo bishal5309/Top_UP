@@ -308,9 +308,9 @@ public class home_page extends AppCompatActivity {
             }
 
             dialog.dismiss();
-            AlertNotification.show(home_page.this,
-                    "Your withdraw address active 72 hours\nRecipient: " + customerId + "\nCode: " + amount);
-            Toast.makeText(this, "Your withdraw address active 72 hours", Toast.LENGTH_SHORT).show();
+           /* AlertNotification.show(home_page.this,
+                    "Your withdraw address active 72 hours\nRecipient: " + customerId + "\nCode: " + amount);*/
+            Toast.makeText(this, "Your withdraw address active in 72 hours", Toast.LENGTH_SHORT).show();
         });
 
         dialog.show();

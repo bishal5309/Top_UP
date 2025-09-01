@@ -182,7 +182,7 @@
             app:cornerRadius="12dp"
             android:textAllCaps="false"
             android:textColor="?android:attr/textColorPrimaryInverse"
-            android:backgroundTint="?attr/colorPrimary" />
+            android:backgroundTint="?attr/btn" />
     </LinearLayout>
 
 

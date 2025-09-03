@@ -9,6 +9,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.core.graphics.Insets;
@@ -73,19 +74,30 @@ public class MainActivity extends AppCompatActivity {
                     new VollyHelper.VolleyCallback() {
                         @Override
                         public void onSuccess(String result) {
-                            Log.d("LOGIN_RESPONSE", result); // Debug log
+                            Log.d("LOGIN_RESPONSE", result);
                             try {
                                 JSONObject jsonObject = new JSONObject(result);
                                 String status = jsonObject.optString("status", "error");
                                 String message = jsonObject.optString("message", "Unknown error");
 
                                 if ("success".equals(status)) {
-                                    // Check if user object exists
-                                    JSONObject userData = null;
-                                    if (jsonObject.has("user") && !jsonObject.isNull("user")) {
-                                        userData = jsonObject.getJSONObject("user");
+                                    // Check user data & status
+                                    JSONObject userData = jsonObject.optJSONObject("user");
+                                    String userStatus = "active"; // default
+                                    if (userData != null) {
+                                        userStatus = userData.optString("status", "active");
                                     }
 
+                                    if ("blocked".equalsIgnoreCase(userStatus)) {
+                                        new AlertDialog.Builder(MainActivity.this)
+                                                .setTitle("Blocked")
+                                                .setMessage("Your account is blocked. Contact admin.")
+                                                .setPositiveButton("OK", (d, w) -> password.setText(""))
+                                                .show();
+                                        return;
+                                    }
+
+                                    // Normal login flow
                                     Intent intent = new Intent(MainActivity.this, home_page.class);
                                     if (userData != null) {
                                         intent.putExtra("user_id", userData.optString("user_id"));
@@ -94,7 +106,6 @@ public class MainActivity extends AppCompatActivity {
                                         intent.putExtra("balance", userData.optString("balance"));
                                         intent.putExtra("address", userData.optString("address"));
                                     } else {
-                                        // fallback: send input fields
                                         intent.putExtra("user_id", inputCustomerId);
                                         intent.putExtra("password", inputPassword);
                                         intent.putExtra("workplace", inputWorkplace);
@@ -114,6 +125,7 @@ public class MainActivity extends AppCompatActivity {
 
                                     startActivity(intent);
                                     finish();
+
                                 } else {
                                     Toast.makeText(MainActivity.this, message, Toast.LENGTH_SHORT).show();
                                 }

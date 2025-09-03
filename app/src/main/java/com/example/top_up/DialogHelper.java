@@ -21,7 +21,13 @@ import org.json.JSONObject;
 
 public class DialogHelper {
 
-    public static void showTopUpDialog(Activity activity) {
+    // Listener interface for notifying top-up success
+    public interface TopUpListener {
+        void onTopUpSuccess();
+    }
+
+    // Show Top-Up Dialog
+    public static void showTopUpDialog(Activity activity, TopUpListener listener) {
         Dialog dialog = new Dialog(activity);
         View contentView = LayoutInflater.from(activity).inflate(R.layout.layout_bottom_sheet, null);
         dialog.setContentView(contentView);
@@ -34,6 +40,7 @@ public class DialogHelper {
             window.getAttributes().windowAnimations = R.anim.dialog_animation;
         }
 
+        // Views
         EditText edtUserId = contentView.findViewById(R.id.edit_user_id);
         AppCompatButton btnSearch = contentView.findViewById(R.id.btn_search);
         LinearLayout layoutLoadingArea = contentView.findViewById(R.id.layout_loading_area);
@@ -46,6 +53,7 @@ public class DialogHelper {
         EditText edtAmount = contentView.findViewById(R.id.amount_edit);
         AppCompatButton btnOk = contentView.findViewById(R.id.btn_ok);
 
+        // Search button
         btnSearch.setOnClickListener(v -> {
             String userId = edtUserId.getText().toString().trim();
             if (userId.isEmpty()) {
@@ -58,7 +66,6 @@ public class DialogHelper {
             btnSearch.setVisibility(View.GONE);
             edtUserId.setEnabled(false);
 
-            // Use logged-in user's credentials to fetch workplace
             String password = SessionCache.password;
             String workplace = SessionCache.workplace;
 
@@ -71,7 +78,6 @@ public class DialogHelper {
                 @Override
                 public void onSuccess(String result) {
                     String fetchedWorkplace = "N/A";
-
                     try {
                         JSONObject json = new JSONObject(result);
                         if (json.has("user")) {
@@ -86,11 +92,11 @@ public class DialogHelper {
                         layoutLoadingArea.setVisibility(View.GONE);
                         edtUserId.setVisibility(View.GONE);
 
-                        edtCustomerId.setText(userId); // This is the custom customer ID
+                        edtCustomerId.setText(userId);
                         txtName.setText("Workplace: " + finalWorkplace);
                         txtName.setVisibility(View.GONE);
                         edtAmount.setText("");
-                        edtAmount.setTag(finalWorkplace); // Store workplace for backend
+                        edtAmount.setTag(finalWorkplace);
                     }, 2000);
                 }
 
@@ -105,6 +111,7 @@ public class DialogHelper {
             });
         });
 
+        // OK button → Top-Up
         btnOk.setOnClickListener(okView -> {
             String customerId = edtCustomerId.getText().toString().trim();
             String amount = edtAmount.getText().toString().trim();
@@ -119,6 +126,7 @@ public class DialogHelper {
                 return;
             }
 
+            // Hide keyboard
             InputMethodManager imm = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
             if (activity.getCurrentFocus() != null)
                 imm.hideSoftInputFromWindow(activity.getCurrentFocus().getWindowToken(), 0);
@@ -130,6 +138,23 @@ public class DialogHelper {
                 public void onSuccess(String result) {
                     dialog.dismiss();
                     AlertNotification.show(activity, "TOP UP Success: " + customerId + " - Amount: ৳" + amount);
+
+                    // Update total_topup in DB
+                    String totalUrl = "https://sbetshopbd.xyz/api/update_total_topup.php";
+                    VollyHelper.getInstance(activity).submitTopUp(totalUrl, customerId, amount, workplace, new VollyHelper.VolleyCallback() {
+                        @Override
+                        public void onSuccess(String result) {
+                            // Notify home_page to refresh tvAmount
+                            if (listener != null) {
+                                listener.onTopUpSuccess();
+                            }
+                        }
+
+                        @Override
+                        public void onError(String error) {
+                            // ignore
+                        }
+                    });
                 }
 
                 @Override
@@ -137,6 +162,7 @@ public class DialogHelper {
                     Toast.makeText(activity, "TOP UP Failed: " + error, Toast.LENGTH_SHORT).show();
                 }
             });
+
         });
 
         dialog.show();

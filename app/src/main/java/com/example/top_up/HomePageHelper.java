@@ -1,6 +1,6 @@
 package com.example.top_up;
 
-import android.content.res.Configuration;
+import android.graphics.Color;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
@@ -11,10 +11,7 @@ import android.widget.TextView;
 import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
-import androidx.core.graphics.Insets;
 import androidx.core.view.GravityCompat;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.google.android.material.navigation.NavigationView;
@@ -22,14 +19,11 @@ import com.google.android.material.navigation.NavigationView;
 public class HomePageHelper {
 
     private final AppCompatActivity activity;
-    private final float maxAmount = 100f;
+    private float maxAmount = 100f; // dynamic maxAmount
 
     // Views
     public DrawerLayout drawerLayout;
     public ImageView menuIcon;
-    public androidx.drawerlayout.widget.DrawerLayout getDrawerLayout() {
-        return drawerLayout;
-    }
     public NavigationView navigationView;
     public TextView tvAmount;
     public ImageButton btnRefresh;
@@ -41,24 +35,10 @@ public class HomePageHelper {
 
     public HomePageHelper(AppCompatActivity activity) {
         this.activity = activity;
-        setupStatusBar();
         initViews();
         setupNavigation();
         setupListeners();
         handleBackGesture();
-    }
-
-    private void setupStatusBar() {
-        int nightModeFlags = activity.getResources().getConfiguration().uiMode &
-                Configuration.UI_MODE_NIGHT_MASK;
-
-        if (nightModeFlags == Configuration.UI_MODE_NIGHT_YES) {
-            activity.getWindow().setStatusBarColor(android.graphics.Color.parseColor("#112740"));
-            activity.getWindow().getDecorView().setSystemUiVisibility(0);
-        } else {
-            activity.getWindow().setStatusBarColor(android.graphics.Color.parseColor("#FFFFFF"));
-            activity.getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-        }
     }
 
     private void initViews() {
@@ -78,27 +58,43 @@ public class HomePageHelper {
         navController = new AppNavigationController(activity, drawerLayout, navigationView);
     }
 
-    private void setupNavigation() {
-        menuIcon.setOnClickListener(v -> navController.openDrawer());
-    }
-
-    private void setupListeners() {
-        btnRefresh.setOnClickListener(v -> refreshAmount());
-        btn_top_up.setOnClickListener(v -> DialogHelper.showTopUpDialog(activity));
-        btn_withdraw.setOnClickListener(v -> WithdrawDialog2.show(activity));
-        exit.setOnClickListener(v -> LogoutDialog.show(activity));
-    }
-
-    public void refreshAmount() {
-        btnRefresh.animate().rotationBy(360f).setDuration(600).start();
-        float newAmount = (float) (Math.random() * maxAmount);
+    // Refresh overlay and tvAmount proportionally
+    public void refreshAmount(float totalTopUp) {
+        float newAmount = totalTopUp; // show total top-up
         tvAmount.setText(String.format("%.2f ৳", newAmount));
+
         whiteOverlay.post(() -> {
             int containerWidth = progressContainer.getWidth();
             int overlayWidth = (int) (containerWidth * (newAmount / maxAmount));
             whiteOverlay.getLayoutParams().width = overlayWidth;
             whiteOverlay.requestLayout();
         });
+    }
+
+    // Animate refresh button (only visual)
+    public void animateRefreshButton() {
+        btnRefresh.animate().rotationBy(360f).setDuration(600).start();
+    }
+
+    private void setupNavigation() {
+        menuIcon.setOnClickListener(v -> navController.openDrawer());
+    }
+
+    private void setupListeners() {
+        btn_top_up.setOnClickListener(v ->
+                DialogHelper.showTopUpDialog(activity, () -> {
+                    if (activity instanceof home_page) {
+                        ((home_page) activity).fetchTotalTopUp(SessionCache.workplace);
+                    }
+                })
+        );
+
+        btn_withdraw.setOnClickListener(v -> WithdrawDialog2.show(activity));
+        exit.setOnClickListener(v -> LogoutDialog.show(activity));
+    }
+
+    public void setMaxAmount(float amount) {
+        this.maxAmount = amount;
     }
 
     private void handleBackGesture() {
@@ -119,7 +115,6 @@ public class HomePageHelper {
         });
     }
 
-    // Optional: Call this in onResume() to mark home menu item
     public void markHomeItem() {
         navController.markCurrentItem(R.id.nav_home);
     }

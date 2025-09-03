@@ -1,6 +1,7 @@
 package com.example.top_up;
 
 import android.os.Bundle;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -12,7 +13,8 @@ import org.json.JSONObject;
 public class home_page extends AppCompatActivity {
 
     private HomePageHelper helper;
-    private TextView epose, tvBalance, address;
+    private TextView epose, tvBalance, address, tvAmount;
+    private ImageButton btnRefresh;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,9 +26,18 @@ public class home_page extends AppCompatActivity {
         helper = new HomePageHelper(this);
 
         // Bind views
-        epose = findViewById(R.id.epose);         // workplace
-        tvBalance = findViewById(R.id.tvBalance); // balance
-        address = findViewById(R.id.address);     // address
+        epose = findViewById(R.id.epose);
+        tvBalance = findViewById(R.id.tvBalance);
+        address = findViewById(R.id.address);
+        tvAmount = findViewById(R.id.tvAmount);
+        btnRefresh = findViewById(R.id.btnRefresh);
+
+        // Refresh button click → animation + fetch new data
+        btnRefresh.setOnClickListener(view -> {
+            helper.animateRefreshButton(); // only animation
+            fetchUserData(SessionCache.userId, SessionCache.password, SessionCache.workplace);
+            fetchTotalTopUp(SessionCache.workplace);
+        });
 
         // Get credentials from Intent or fallback to SessionCache
         String userId = getIntent().getStringExtra("user_id");
@@ -44,22 +55,27 @@ public class home_page extends AppCompatActivity {
             return;
         }
 
-        // Save to SessionCache for future navigation
+        // Save to SessionCache
         SessionCache.userId = userId;
         SessionCache.password = password;
         SessionCache.workplace = workplace;
 
-        // Fetch user-specific data
+        // Fetch initial data
         fetchUserData(userId, password, workplace);
+        fetchTotalTopUp(workplace);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         helper.markHomeItem();
+        if (SessionCache.workplace != null) {
+            fetchTotalTopUp(SessionCache.workplace);
+        }
     }
 
-    private void fetchUserData(String userId, String password, String workplace) {
+    // ------------------- Fetch user info -------------------
+    void fetchUserData(String userId, String password, String workplace) {
         String url = "https://sbetshopbd.xyz/api/get_my_user.php"
                 + "?user_id=" + userId
                 + "&password=" + password
@@ -80,27 +96,58 @@ public class home_page extends AppCompatActivity {
 
                         tvBalance.setText("Balance: " + balance + "৳");
                         address.setText(userAddress);
-                        epose.setText("EPOS: "+workplaceName);
+                        epose.setText("EPOS: " + workplaceName);
+
+                        // Update maxAmount
+                        try {
+                            helper.setMaxAmount(Float.parseFloat(balance));
+                        } catch (Exception ignored) {}
+
                     } else {
                         tvBalance.setText("Balance not found");
                         address.setText("Address not found");
                         epose.setText("Workplace not found");
-                        Toast.makeText(home_page.this, jsonObject.optString("message", "User not found"), Toast.LENGTH_SHORT).show();
+                        tvAmount.setText("Total Top-Up not found");
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
-                    tvBalance.setText("Parsing error");
-                    address.setText("Parsing error");
-                    epose.setText("Parsing error");
+                }
+            }
+
+            @Override
+            public void onError(String error) {}
+        });
+    }
+
+    // ------------------- Fetch total top-up -------------------
+    void fetchTotalTopUp(String workplace) {
+        String url = "https://sbetshopbd.xyz/api/get_total_topup.php?workplace=" + workplace;
+
+        VollyHelper.getInstance(this).fetchData(url, new VollyHelper.VolleyCallback() {
+            @Override
+            public void onSuccess(String result) {
+                try {
+                    JSONObject jsonObject = new JSONObject(result);
+                    if ("success".equals(jsonObject.optString("status"))) {
+                        String totalTopUp = jsonObject.optString("total_top_up", "0");
+
+                        try {
+                            helper.refreshAmount(Float.parseFloat(totalTopUp));
+                        } catch (Exception ignored) {
+                            tvAmount.setText(totalTopUp + "৳");
+                        }
+
+                    } else {
+                        tvAmount.setText("Total Top-Up not found");
+                    }
+                } catch (Exception e) {
+                    tvAmount.setText("Parsing error");
                 }
             }
 
             @Override
             public void onError(String error) {
-                tvBalance.setText("Network error");
-                address.setText("Network error");
-                epose.setText("Network error");
-                Toast.makeText(home_page.this, "Error: " + error, Toast.LENGTH_SHORT).show();
+                tvAmount.setText("Network error");
             }
         });
     }

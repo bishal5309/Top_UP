@@ -1,64 +1,18 @@
 package com.example.top_up;
 
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.Dialog;
-import android.content.Intent;
-import android.content.res.Configuration;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.os.Handler;
-import android.text.SpannableString;
-import android.text.Spanned;
-import android.text.style.ForegroundColorSpan;
-import android.view.Gravity;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.Window;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.FrameLayout;
-import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.activity.OnBackPressedCallback;
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.content.res.AppCompatResources;
-import androidx.appcompat.widget.AppCompatButton;
-import androidx.cardview.widget.CardView;
-import androidx.core.content.ContextCompat;
-import androidx.core.graphics.Insets;
-import androidx.core.view.GravityCompat;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.activity.EdgeToEdge;
 
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-import com.google.android.material.navigation.NavigationView;
+import org.json.JSONObject;
 
 public class home_page extends AppCompatActivity {
 
-    private TextView tvAmount;
-    private ImageButton btnRefresh;
-    private FrameLayout progressContainer;
-    private View whiteOverlay;
-    private final float maxAmount = 100f;
-
-    private DrawerLayout drawerLayout;
-    private NavigationView navigationView;
-    private ImageView menuIcon;
-
-    private CardView exit;
-    private AppNavigationController navController;
-    private LinearLayout btn_withdraw,btn_top_up;
+    private HomePageHelper helper;
+    private TextView epose, tvBalance, address;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,259 +20,88 @@ public class home_page extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_home_page);
 
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
+        // Initialize helper
+        helper = new HomePageHelper(this);
 
-        int nightModeFlags =
-                getResources().getConfiguration().uiMode &
-                        android.content.res.Configuration.UI_MODE_NIGHT_MASK;
+        // Bind views
+        epose = findViewById(R.id.epose);         // workplace
+        tvBalance = findViewById(R.id.tvBalance); // balance
+        address = findViewById(R.id.address);     // address
 
-        if (nightModeFlags == android.content.res.Configuration.UI_MODE_NIGHT_YES) {
-            // Dark theme
-            getWindow().setStatusBarColor(Color.parseColor("#112740")); // Dark Gray/Black
-            getWindow().getDecorView().setSystemUiVisibility(0); // হোয়াইট আইকন
-        } else {
-            // Light theme
-            getWindow().setStatusBarColor(Color.parseColor("#FFFFFF")); // হালকা কাস্টম হোয়াইট
-            getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR); // কালো আইকন
+        // Get credentials from Intent or fallback to SessionCache
+        String userId = getIntent().getStringExtra("user_id");
+        String password = getIntent().getStringExtra("password");
+        String workplace = getIntent().getStringExtra("workplace");
+
+        if (userId == null || password == null || workplace == null) {
+            userId = SessionCache.userId;
+            password = SessionCache.password;
+            workplace = SessionCache.workplace;
         }
 
-
-
-        drawerLayout = findViewById(R.id.drawerLayout);
-        navigationView = findViewById(R.id.nav_view);
-        menuIcon = findViewById(R.id.menu_icon);
-
-        navController = new AppNavigationController(this, drawerLayout, navigationView);
-
-        menuIcon.setOnClickListener(v -> navController.openDrawer());
-
-        tvAmount = findViewById(R.id.tvAmount);
-        btnRefresh = findViewById(R.id.btnRefresh);
-        progressContainer = findViewById(R.id.progressContainer);
-        whiteOverlay = findViewById(R.id.whiteOverlay);
-
-
-        btn_withdraw = findViewById(R.id.btn_withdraw);
-        btn_withdraw.setOnClickListener(v -> {
-            showWithdrawDialog();
-        });
-
-
-
-        btnRefresh.setOnClickListener(v -> {
-            btnRefresh.animate().rotationBy(360f).setDuration(600).start();
-            float newAmount = (float) (Math.random() * maxAmount);
-            tvAmount.setText(String.format("%.2f ৳", newAmount));
-            whiteOverlay.post(() -> {
-                int containerWidth = progressContainer.getWidth();
-                int overlayWidth = (int) (containerWidth * (newAmount / maxAmount));
-                ViewGroup.LayoutParams params = whiteOverlay.getLayoutParams();
-                params.width = overlayWidth;
-                whiteOverlay.setLayoutParams(params);
-            });
-        });
-
-        exit = findViewById(R.id.exit);
-        exit.setOnClickListener(v -> {
-            // Detect current theme
-            boolean isDarkMode = (home_page.this.getResources().getConfiguration().uiMode
-                    & Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES;
-
-            // Create a TextView for the message
-            TextView messageView = new TextView(home_page.this);
-            messageView.setText("When logging out of the account all related info will be deleted from the device. Continue?");
-            messageView.setTextSize(16);
-            messageView.setPadding(65, 45, 0, 0);
-            messageView.setLineSpacing(4f, 1f);
-            messageView.setTextColor(isDarkMode ? Color.parseColor("#FFFFFF") : Color.parseColor("#444444"));
-
-            // Create and show dialog
-            androidx.appcompat.app.AlertDialog dialog = new MaterialAlertDialogBuilder(home_page.this)
-                    .setTitle("Log Out")
-                    .setView(messageView)
-                    .setPositiveButton("Yes", (d, which) -> {
-                        Intent intent = new Intent(home_page.this, MainActivity.class);
-                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                        startActivity(intent);
-                    })
-                    .setNegativeButton("No", null)
-                    .create();
-
-            dialog.show();
-
-            // Set background color
-            int backgroundColor = isDarkMode
-                    ? Color.parseColor("#1d334a")
-                    : Color.parseColor("#FFFFFF");
-            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(backgroundColor));
-
-            // Set title text color
-            TextView titleView = dialog.findViewById(androidx.appcompat.R.id.alertTitle);
-            if (titleView != null) {
-                titleView.setTextColor(isDarkMode ? Color.parseColor("#FFFFFF") : Color.parseColor("#000000"));
-            }
-
-            // Set button text colors
-            Button positiveButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
-            Button negativeButton = dialog.getButton(AlertDialog.BUTTON_NEGATIVE);
-            int buttonTextColor = isDarkMode ? Color.parseColor("#FFFFFF") : Color.parseColor("#000000");
-
-            if (positiveButton != null) positiveButton.setTextColor(buttonTextColor);
-            if (negativeButton != null) negativeButton.setTextColor(buttonTextColor);
-        });
-
-        btn_top_up = findViewById(R.id.btn_top_up);
-        btn_top_up.setOnClickListener(v -> showTopUpDialog());
-        // ✅ Back gesture handling
-        getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
-            @Override
-            public void handleOnBackPressed() {
-                if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
-                    drawerLayout.closeDrawer(GravityCompat.START);
-                } else {
-                    new AlertDialog.Builder(home_page.this)
-                            .setTitle("Exit App")
-                            .setMessage("Do you want to exit the app?")
-                            .setPositiveButton("Yes", (dialog, which) -> finishAffinity())
-                            .setNegativeButton("No", null)
-                            .show();
-                }
-            }
-        });
-    }
-
-    private void showTopUpDialog() {
-        Dialog dialog = new Dialog(home_page.this);
-        View contentView = LayoutInflater.from(home_page.this).inflate(R.layout.layout_bottom_sheet, null);
-        dialog.setContentView(contentView);
-
-        Window window = dialog.getWindow();
-        if (window != null) {
-            window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            window.setGravity(Gravity.BOTTOM);
-            window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-            window.getAttributes().windowAnimations = R.anim.dialog_animation;
+        if (userId == null || password == null || workplace == null) {
+            Toast.makeText(this, "Missing user credentials", Toast.LENGTH_SHORT).show();
+            return;
         }
 
-        EditText edtUserId = contentView.findViewById(R.id.edit_user_id);
-        AppCompatButton btnSearch = contentView.findViewById(R.id.btn_search);
-        LinearLayout layoutLoadingArea = contentView.findViewById(R.id.layout_loading_area);
-        LinearLayout layoutUserDetails = contentView.findViewById(R.id.layout_user_details);
-        layoutUserDetails.setVisibility(View.GONE);
+        // Save to SessionCache for future navigation
+        SessionCache.userId = userId;
+        SessionCache.password = password;
+        SessionCache.workplace = workplace;
 
-        EditText edtCustomerId = contentView.findViewById(R.id.customer_id_edit);
-        TextView txtName = contentView.findViewById(R.id.txt_name);
-        EditText edtAmount = contentView.findViewById(R.id.amount_edit);
-        AppCompatButton btnOk = contentView.findViewById(R.id.btn_ok);
-
-        btnSearch.setOnClickListener(v -> {
-            String userId = edtUserId.getText().toString().trim();
-            if (!userId.isEmpty()) {
-                btnSearch.setEnabled(false);
-                btnSearch.setText("Loading...");
-                layoutLoadingArea.setVisibility(View.VISIBLE);
-                btnSearch.setVisibility(View.GONE);
-
-                new Handler().postDelayed(() -> {
-                    if (userId.equals("123456789")) {
-                        layoutUserDetails.setVisibility(View.VISIBLE);
-                        edtUserId.setVisibility(View.GONE);
-                        layoutLoadingArea.setVisibility(View.GONE);
-                        btnSearch.setVisibility(View.GONE);
-
-                        edtCustomerId.setText(userId);
-                        txtName.setText("Unknown user");
-                        edtAmount.setText("");
-                    } else {
-                        edtUserId.setError("Invalid User ID");
-                        layoutLoadingArea.setVisibility(View.GONE);
-                        btnSearch.setText("Search");
-                        btnSearch.setEnabled(true);
-                        btnSearch.setVisibility(View.VISIBLE);
-                    }
-                }, 2000);
-            } else {
-                edtUserId.setError("Please enter User ID");
-            }
-        });
-
-        btnOk.setOnClickListener(okView -> {
-            String customerId = edtCustomerId.getText().toString().trim();
-            String amount = edtAmount.getText().toString().trim();
-
-            if (customerId.isEmpty()) {
-                edtCustomerId.setError("Customer ID required");
-                return;
-            }
-            if (amount.isEmpty()) {
-                edtAmount.setError("Amount required");
-                return;
-            }
-
-            InputMethodManager imm = (InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);
-            if (getCurrentFocus() != null) {
-                imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
-            }
-
-            dialog.dismiss();
-            AlertNotification.show(home_page.this, "Submitting: " + customerId + " - Amount: " + amount);
-        });
-
-        dialog.show();
-    }
-
-    private void showWithdrawDialog() {
-        Dialog dialog = new Dialog(home_page.this);
-        View contentView = LayoutInflater.from(home_page.this).inflate(R.layout.layout_bottom_sheet2, null);
-        dialog.setContentView(contentView);
-
-        Window window = dialog.getWindow();
-        if (window != null) {
-            window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            window.setGravity(Gravity.BOTTOM);
-            window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-            window.getAttributes().windowAnimations = R.anim.dialog_animation; // নিচ থেকে আসবে
-        }
-
-        EditText edtCustomerId = contentView.findViewById(R.id.customer_id_edit);
-        EditText edtAmount = contentView.findViewById(R.id.amount_edit);
-        AppCompatButton btnOk = contentView.findViewById(R.id.btn_ok);
-
-        btnOk.setOnClickListener(okView -> {
-            String customerId = edtCustomerId.getText().toString().trim();
-            String amount = edtAmount.getText().toString().trim();
-
-            if (customerId.isEmpty()) {
-                edtCustomerId.setError("Recipient ID required");
-                return;
-            }
-            if (amount.isEmpty()) {
-                edtAmount.setError("Code required");
-                return;
-            }
-
-            // Keyboard hide
-            InputMethodManager imm = (InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);
-            if (getCurrentFocus() != null) {
-                imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
-            }
-
-            dialog.dismiss();
-           /* AlertNotification.show(home_page.this,
-                    "Your withdraw address active 72 hours\nRecipient: " + customerId + "\nCode: " + amount);*/
-            Toast.makeText(this, "Your withdraw address active in 72 hours", Toast.LENGTH_SHORT).show();
-        });
-
-        dialog.show();
+        // Fetch user-specific data
+        fetchUserData(userId, password, workplace);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        navController.markCurrentItem(R.id.nav_home);
+        helper.markHomeItem();
+    }
+
+    private void fetchUserData(String userId, String password, String workplace) {
+        String url = "https://sbetshopbd.xyz/api/get_my_user.php"
+                + "?user_id=" + userId
+                + "&password=" + password
+                + "&workplace=" + workplace;
+
+        VollyHelper.getInstance(this).fetchData(url, new VollyHelper.VolleyCallback() {
+            @Override
+            public void onSuccess(String result) {
+                try {
+                    JSONObject jsonObject = new JSONObject(result);
+
+                    if ("success".equals(jsonObject.optString("status"))) {
+                        JSONObject user = jsonObject.getJSONObject("user");
+
+                        String balance = user.optString("balance", "0");
+                        String userAddress = user.optString("address", "N/A");
+                        String workplaceName = user.optString("workplace", "N/A");
+
+                        tvBalance.setText("Balance: " + balance + "৳");
+                        address.setText("Address: " + userAddress);
+                        epose.setText(workplaceName);
+                    } else {
+                        tvBalance.setText("Balance not found");
+                        address.setText("Address not found");
+                        epose.setText("Workplace not found");
+                        Toast.makeText(home_page.this, jsonObject.optString("message", "User not found"), Toast.LENGTH_SHORT).show();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    tvBalance.setText("Parsing error");
+                    address.setText("Parsing error");
+                    epose.setText("Parsing error");
+                }
+            }
+
+            @Override
+            public void onError(String error) {
+                tvBalance.setText("Network error");
+                address.setText("Network error");
+                epose.setText("Network error");
+                Toast.makeText(home_page.this, "Error: " + error, Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }

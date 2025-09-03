@@ -68,7 +68,7 @@
     <EditText
         android:layout_marginTop="10dp"
         android:textColor="?attr/customTextColor"
-        android:id="@+id/wc"
+        android:id="@+id/workplace"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="7dp"
@@ -121,6 +121,7 @@
     </androidx.cardview.widget.CardView>
 
     <TextView
+        android:id="@+id/version"
         android:layout_margin="18dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

@@ -2,18 +2,19 @@ package com.example.top_up;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.drawable.GradientDrawable;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.TextView;
+
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.SwitchCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+
 import com.google.android.material.navigation.NavigationView;
 
 public class AppNavigationController {
@@ -35,9 +36,18 @@ public class AppNavigationController {
         navigationView.setNavigationItemSelectedListener(item -> {
             int id = item.getItemId();
 
+            // Extract credentials from current activity's Intent
+            String userId = activity.getIntent().getStringExtra("user_id");
+            String password = activity.getIntent().getStringExtra("password");
+            String workplace = activity.getIntent().getStringExtra("workplace");
+
             if (id == R.id.nav_home) {
                 if (!(activity instanceof home_page)) {
-                    activity.startActivity(new Intent(activity, home_page.class));
+                    Intent intent = new Intent(activity, home_page.class);
+                    intent.putExtra("user_id", userId);
+                    intent.putExtra("password", password);
+                    intent.putExtra("workplace", workplace);
+                    activity.startActivity(intent);
                     activity.finish();
                 }
             } else if (id == R.id.nav_notification) {
@@ -70,7 +80,6 @@ public class AppNavigationController {
         navigationView.post(() -> {
             View actionView = navigationView.getMenu().findItem(R.id.nav_cst).getActionView();
             if (actionView == null) {
-                // Badge TextView
                 TextView badge = new TextView(activity);
                 badge.setText("0");
                 badge.setTextColor(activity.getResources().getColor(android.R.color.white));
@@ -86,33 +95,25 @@ public class AppNavigationController {
                 bg.setCornerRadius(size / 2f);
                 badge.setBackground(bg);
 
-                // FrameLayout container
                 FrameLayout frame = new FrameLayout(activity);
                 FrameLayout.LayoutParams badgeParams = new FrameLayout.LayoutParams(
                         FrameLayout.LayoutParams.WRAP_CONTENT,
                         FrameLayout.LayoutParams.WRAP_CONTENT
                 );
                 badgeParams.gravity = Gravity.CENTER_VERTICAL | Gravity.START;
-                badgeParams.setMargins(dpToPx(0), 0, 50, 0); // Left margin কমানো → badge আরও left
+                badgeParams.setMargins(dpToPx(0), 0, 50, 0);
                 badge.setLayoutParams(badgeParams);
 
                 frame.addView(badge);
-
                 navigationView.getMenu().findItem(R.id.nav_cst).setActionView(frame);
             }
         });
-
-
-
-
-
     }
 
     private int dpToPx(int dp) {
         float density = activity.getResources().getDisplayMetrics().density;
         return (int) (dp * density + 0.5f);
     }
-
 
     private void setupDarkThemeSwitch() {
         navigationView.post(() -> {
@@ -138,38 +139,24 @@ public class AppNavigationController {
                 return;
             }
 
-            // Custom thumb & track tint
             themeSwitch.setThumbTintList(ContextCompat.getColorStateList(activity, R.color.switch_thumb_color));
             themeSwitch.setTrackTintList(ContextCompat.getColorStateList(activity, R.color.switch_track_color));
 
-            // SharedPreferences to remember user choice
-            SharedPreferences prefs = activity.getSharedPreferences("theme_prefs", Activity.MODE_PRIVATE);
-            boolean isDarkMode = prefs.getBoolean("is_dark_switch_on", false);
+            themeSwitch.setChecked(AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES);
 
-            // Apply saved theme (default light)
-            if (isDarkMode) {
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-            } else {
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-            }
-
-            themeSwitch.setChecked(isDarkMode);
-
-            // ✅ Toggle theme when user switches
             themeSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
-                prefs.edit().putBoolean("is_dark_switch_on", isChecked).apply();
-
+                Log.d("AppNavController", "Switch toggled: " + isChecked);
                 if (isChecked) {
                     AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
                 } else {
                     AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
                 }
+                activity.recreate();
             });
 
-            // ✅ Handle clicks on the whole nav_dark item (text or icon)
             navigationView.getMenu().findItem(R.id.nav_dark).setOnMenuItemClickListener(item -> {
-                themeSwitch.toggle(); // simulate switch toggle
-                return true; // don't close drawer
+                themeSwitch.toggle();
+                return true;
             });
         });
     }

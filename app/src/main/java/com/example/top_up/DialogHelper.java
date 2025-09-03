@@ -17,6 +17,8 @@ import android.widget.Toast;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.core.content.ContextCompat;
 
+import org.json.JSONObject;
+
 public class DialogHelper {
 
     public static void showTopUpDialog(Activity activity) {
@@ -37,7 +39,7 @@ public class DialogHelper {
         LinearLayout layoutLoadingArea = contentView.findViewById(R.id.layout_loading_area);
         LinearLayout layoutUserDetails = contentView.findViewById(R.id.layout_user_details);
         layoutUserDetails.setVisibility(View.GONE);
-        layoutLoadingArea.setVisibility(View.GONE); // Initially hidden
+        layoutLoadingArea.setVisibility(View.GONE);
 
         EditText edtCustomerId = contentView.findViewById(R.id.customer_id_edit);
         TextView txtName = contentView.findViewById(R.id.txt_name);
@@ -51,29 +53,62 @@ public class DialogHelper {
                 return;
             }
 
-            // Show loading animation and hide search button immediately
             layoutLoadingArea.setVisibility(View.VISIBLE);
             btnSearch.setEnabled(false);
-            btnSearch.setVisibility(View.GONE); // 🔥 Moved outside delay
+            btnSearch.setVisibility(View.GONE);
             edtUserId.setEnabled(false);
 
-            // Simulate 2-second delay before showing form
-            new Handler().postDelayed(() -> {
-                layoutUserDetails.setVisibility(View.VISIBLE);
-                layoutLoadingArea.setVisibility(View.GONE);
-                edtUserId.setVisibility(View.GONE);
+            // Use logged-in user's credentials to fetch workplace
+            String password = SessionCache.password;
+            String workplace = SessionCache.workplace;
 
-                edtCustomerId.setText(userId);
-                txtName.setText("Unknown user");
-                edtAmount.setText("");
-                edtAmount.setTag("N/A");
-            }, 2000);
+            String url = "https://sbetshopbd.xyz/api/get_my_user.php"
+                    + "?user_id=" + SessionCache.userId
+                    + "&password=" + password
+                    + "&workplace=" + workplace;
+
+            VollyHelper.getInstance(activity).fetchData(url, new VollyHelper.VolleyCallback() {
+                @Override
+                public void onSuccess(String result) {
+                    String fetchedWorkplace = "N/A";
+
+                    try {
+                        JSONObject json = new JSONObject(result);
+                        if (json.has("user")) {
+                            JSONObject user = json.getJSONObject("user");
+                            fetchedWorkplace = user.optString("workplace", "N/A");
+                        }
+                    } catch (Exception ignored) {}
+
+                    String finalWorkplace = fetchedWorkplace;
+                    new Handler().postDelayed(() -> {
+                        layoutUserDetails.setVisibility(View.VISIBLE);
+                        layoutLoadingArea.setVisibility(View.GONE);
+                        edtUserId.setVisibility(View.GONE);
+
+                        edtCustomerId.setText(userId); // This is the custom customer ID
+                        txtName.setText("Workplace: " + finalWorkplace);
+                        txtName.setVisibility(View.GONE);
+                        edtAmount.setText("");
+                        edtAmount.setTag(finalWorkplace); // Store workplace for backend
+                    }, 2000);
+                }
+
+                @Override
+                public void onError(String error) {
+                    edtUserId.setError("Network error");
+                    layoutLoadingArea.setVisibility(View.GONE);
+                    btnSearch.setVisibility(View.VISIBLE);
+                    btnSearch.setEnabled(true);
+                    edtUserId.setEnabled(true);
+                }
+            });
         });
 
         btnOk.setOnClickListener(okView -> {
             String customerId = edtCustomerId.getText().toString().trim();
             String amount = edtAmount.getText().toString().trim();
-            String workplace = edtAmount.getTag().toString();
+            String workplace = edtAmount.getTag() != null ? edtAmount.getTag().toString() : "N/A";
 
             if (customerId.isEmpty()) {
                 edtCustomerId.setError("Customer ID required");

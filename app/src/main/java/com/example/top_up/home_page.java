@@ -79,8 +79,8 @@ public class home_page extends AppCompatActivity {
                         String workplaceName = user.optString("workplace", "N/A");
 
                         tvBalance.setText("Balance: " + balance + "৳");
-                        address.setText("Address: " + userAddress);
-                        epose.setText(workplaceName);
+                        address.setText(userAddress);
+                        epose.setText("EPOS: "+workplaceName);
                     } else {
                         tvBalance.setText("Balance not found");
                         address.setText("Address not found");

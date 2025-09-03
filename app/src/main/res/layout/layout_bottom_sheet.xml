@@ -140,7 +140,19 @@
             android:layout_marginRight="15dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="M. Md Shoel Rana"
+            android:visibility="gone"
+            android:text=""
+            android:textSize="16sp"
+            />
+
+        <TextView
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="15dp"
+            android:textColor="?attr/customTextColor"
+            android:layout_marginRight="15dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Unknown user"
             android:textSize="16sp"
             />
 

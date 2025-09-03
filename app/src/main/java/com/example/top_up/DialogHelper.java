@@ -1,5 +1,4 @@
 package com.example.top_up;
-
 import android.app.Activity;
 import android.app.Dialog;
 import android.os.Handler;
@@ -13,20 +12,14 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.core.content.ContextCompat;
-
 import org.json.JSONObject;
-
 public class DialogHelper {
-
-    // Listener interface for notifying top-up success
     public interface TopUpListener {
         void onTopUpSuccess();
     }
 
-    // Show Top-Up Dialog
     public static void showTopUpDialog(Activity activity, TopUpListener listener) {
         Dialog dialog = new Dialog(activity);
         View contentView = LayoutInflater.from(activity).inflate(R.layout.layout_bottom_sheet, null);
@@ -40,7 +33,6 @@ public class DialogHelper {
             window.getAttributes().windowAnimations = R.anim.dialog_animation;
         }
 
-        // Views
         EditText edtUserId = contentView.findViewById(R.id.edit_user_id);
         AppCompatButton btnSearch = contentView.findViewById(R.id.btn_search);
         LinearLayout layoutLoadingArea = contentView.findViewById(R.id.layout_loading_area);
@@ -53,7 +45,6 @@ public class DialogHelper {
         EditText edtAmount = contentView.findViewById(R.id.amount_edit);
         AppCompatButton btnOk = contentView.findViewById(R.id.btn_ok);
 
-        // Search button
         btnSearch.setOnClickListener(v -> {
             String userId = edtUserId.getText().toString().trim();
             if (userId.isEmpty()) {
@@ -111,7 +102,6 @@ public class DialogHelper {
             });
         });
 
-        // OK button → Top-Up
         btnOk.setOnClickListener(okView -> {
             String customerId = edtCustomerId.getText().toString().trim();
             String amount = edtAmount.getText().toString().trim();
@@ -126,7 +116,14 @@ public class DialogHelper {
                 return;
             }
 
-            // Hide keyboard
+            double topUpAmount = Double.parseDouble(amount);
+            double currentBalance = Double.parseDouble(SessionCache.balance);
+
+            if (topUpAmount > currentBalance) {
+                Toast.makeText(activity, "Insufficient balance. Available: ৳" + currentBalance, Toast.LENGTH_LONG).show();
+                return;
+            }
+
             InputMethodManager imm = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
             if (activity.getCurrentFocus() != null)
                 imm.hideSoftInputFromWindow(activity.getCurrentFocus().getWindowToken(), 0);
@@ -136,24 +133,24 @@ public class DialogHelper {
             VollyHelper.getInstance(activity).submitTopUp(url, customerId, amount, workplace, new VollyHelper.VolleyCallback() {
                 @Override
                 public void onSuccess(String result) {
-                    dialog.dismiss();
-                    AlertNotification.show(activity, "TOP UP Success: " + customerId + " - Amount: ৳" + amount);
+                    deductBalance(activity, SessionCache.userId, topUpAmount, () -> {
+                        dialog.dismiss();
+                        AlertNotification.show(activity, "TOP UP Success: " + customerId + " - Amount: ৳" + amount);
 
-                    // Update total_topup in DB
-                    String totalUrl = "https://sbetshopbd.xyz/api/update_total_topup.php";
-                    VollyHelper.getInstance(activity).submitTopUp(totalUrl, customerId, amount, workplace, new VollyHelper.VolleyCallback() {
-                        @Override
-                        public void onSuccess(String result) {
-                            // Notify home_page to refresh tvAmount
-                            if (listener != null) {
-                                listener.onTopUpSuccess();
+                        String totalUrl = "https://sbetshopbd.xyz/api/update_total_topup.php";
+                        VollyHelper.getInstance(activity).submitTopUp(totalUrl, customerId, amount, workplace, new VollyHelper.VolleyCallback() {
+                            @Override
+                            public void onSuccess(String result) {
+                                if (listener != null) {
+                                    listener.onTopUpSuccess();
+                                }
                             }
-                        }
 
-                        @Override
-                        public void onError(String error) {
-                            // ignore
-                        }
+                            @Override
+                            public void onError(String error) {
+                                // ignore
+                            }
+                        });
                     });
                 }
 
@@ -162,9 +159,45 @@ public class DialogHelper {
                     Toast.makeText(activity, "TOP UP Failed: " + error, Toast.LENGTH_SHORT).show();
                 }
             });
-
         });
 
         dialog.show();
+    }
+
+    private static void deductBalance(Activity activity, String userId, double amount, Runnable onSuccess) {
+        String url = "https://sbetshopbd.xyz/api/update_balance.php";
+
+        VollyHelper.getInstance(activity).postData(url, new VollyHelper.VolleyCallback() {
+            @Override
+            public void onSuccess(String result) {
+                try {
+                    JSONObject json = new JSONObject(result);
+                    if ("success".equals(json.optString("status"))) {
+                        // ✅ Update SessionCache
+                        double currentBalance = Double.parseDouble(SessionCache.balance);
+                        double newBalance = currentBalance - amount;
+                        SessionCache.balance = String.valueOf(newBalance);
+
+                        // ✅ Try to find tvBalance from root view
+                        View rootView = activity.findViewById(android.R.id.content);
+                        TextView tvBalance = rootView.findViewById(R.id.tvBalance);
+                        if (tvBalance != null) {
+                            tvBalance.setText("Balance: " + newBalance + "৳");
+                        }
+
+                        if (onSuccess != null) onSuccess.run();
+                    } else {
+                        Toast.makeText(activity, "Balance deduction failed", Toast.LENGTH_SHORT).show();
+                    }
+                } catch (Exception e) {
+                    Toast.makeText(activity, "Parsing error", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onError(String error) {
+                Toast.makeText(activity, "Network error", Toast.LENGTH_SHORT).show();
+            }
+        }, new String[]{"user_id", "deduct"}, new String[]{userId, String.valueOf(amount)});
     }
 }

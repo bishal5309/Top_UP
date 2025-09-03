@@ -1,6 +1,8 @@
 package com.example.top_up;
 
+import android.graphics.Color;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -21,6 +23,19 @@ public class home_page extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_home_page);
+
+
+        int nightModeFlags =
+                getResources().getConfiguration().uiMode &
+                        android.content.res.Configuration.UI_MODE_NIGHT_MASK;
+
+        if (nightModeFlags == android.content.res.Configuration.UI_MODE_NIGHT_YES) {
+            getWindow().setStatusBarColor(Color.parseColor("#112740")); // Dark
+            getWindow().getDecorView().setSystemUiVisibility(0); // White icons
+        } else {
+            getWindow().setStatusBarColor(Color.parseColor("#FFFFFF")); // Light
+            getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR); // Dark icons
+        }
 
         // Initialize helper
         helper = new HomePageHelper(this);
@@ -97,8 +112,8 @@ public class home_page extends AppCompatActivity {
                         tvBalance.setText("Balance: " + balance + "৳");
                         address.setText(userAddress);
                         epose.setText("EPOS: " + workplaceName);
+                        SessionCache.balance = balance;
 
-                        // Update maxAmount
                         try {
                             helper.setMaxAmount(Float.parseFloat(balance));
                         } catch (Exception ignored) {}

@@ -52,7 +52,7 @@ public class VollyHelper {
                 Map<String, String> params = new HashMap<>();
                 params.put("user_id", userId);
                 params.put("password", password);
-                params.put("workplace", workplace); // ✅ এখানে সঠিক key ব্যবহার করা হয়েছে
+                params.put("workplace", workplace);
                 return params;
             }
         };
@@ -70,6 +70,32 @@ public class VollyHelper {
         getRequestQueue().add(request);
     }
 
+    // ================= Generic POST with key-value pairs =================
+    public void postData(String url, final VolleyCallback callback, final String[] keys, final String[] values) {
+        StringRequest request = new StringRequest(Request.Method.POST, url,
+                response -> {
+                    if (callback != null) {
+                        callback.onSuccess(response);
+                    }
+                },
+                error -> {
+                    if (callback != null) {
+                        callback.onError(error.toString());
+                    }
+                }) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<>();
+                for (int i = 0; i < keys.length; i++) {
+                    params.put(keys[i], values[i]);
+                }
+                return params;
+            }
+        };
+        request.setRetryPolicy(new DefaultRetryPolicy(5000, 2, 1));
+        getRequestQueue().add(request);
+    }
+
     // ================= Submit Top-Up =================
     public void submitTopUp(String url, String userId, String amount, String workplace, VolleyCallback callback) {
         StringRequest request = new StringRequest(Request.Method.POST, url,
@@ -80,7 +106,7 @@ public class VollyHelper {
                 Map<String, String> params = new HashMap<>();
                 params.put("user_id", userId);
                 params.put("amount", amount);
-                params.put("workplace", workplace); // ✅ এখানে ও workplace ব্যবহার
+                params.put("workplace", workplace);
                 params.put("type", "TOP UP");
                 return params;
             }

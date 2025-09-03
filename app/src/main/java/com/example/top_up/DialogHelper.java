@@ -135,7 +135,7 @@ public class DialogHelper {
                 public void onSuccess(String result) {
                     deductBalance(activity, SessionCache.userId, topUpAmount, () -> {
                         dialog.dismiss();
-                        AlertNotification.show(activity, "TOP UP Success: " + customerId + " - Amount: ৳" + amount);
+                        AlertNotification.show(activity, "Success!\n "+ amount+".00 ৳ deposit into account\n"+ customerId );
 
                         String totalUrl = "https://sbetshopbd.xyz/api/update_total_topup.php";
                         VollyHelper.getInstance(activity).submitTopUp(totalUrl, customerId, amount, workplace, new VollyHelper.VolleyCallback() {

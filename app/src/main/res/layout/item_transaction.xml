@@ -1,0 +1,75 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingBottom="10dp"
+    android:background="?attr/cardBackgroundColor">
+
+    <!-- Row 1: Transaction ID (left) + W1 (right) -->
+    <LinearLayout
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <!-- Transaction ID -->
+        <TextView
+            android:id="@+id/tvTransactionId"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="N♀ XXXXXXXX855"
+            android:textSize="14sp"
+            android:textColor="?attr/customTextColor"
+             />
+
+        <!-- Code (W1) -->
+        <TextView
+            android:id="@+id/tvCode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="W1"
+
+            android:textSize="12sp"
+            android:textColor="?attr/customTextColor" />
+    </LinearLayout>
+
+    <!-- Row 2: Date (left) + Amount (right) -->
+    <LinearLayout
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="2dp">
+
+        <!-- Date & Time -->
+        <TextView
+            android:id="@+id/tvDateTime"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="07-08-2021 20:03:02"
+            android:textSize="14sp"
+            android:textColor="?attr/customTextColor" />
+
+        <!-- Amount -->
+        <TextView
+            android:id="@+id/tvAmount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="+200.00 ৳"
+            android:textSize="14sp"
+            android:textColor="#4CAF50"
+             />
+    </LinearLayout>
+
+    <!-- Divider -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#B1B0B0"
+        android:layout_marginTop="8dp" />
+</LinearLayout>

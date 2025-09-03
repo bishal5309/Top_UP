@@ -144,7 +144,7 @@ public class MainActivity extends AppCompatActivity {
                     JSONObject jsonObject = new JSONObject(result);
                     if ("success".equals(jsonObject.optString("status"))) {
                         String versionCode = jsonObject.optString("version_code", "N/A");
-                        version.setText("App Version: " + versionCode);
+                        version.setText("Version: " + versionCode);
                     } else {
                         Toast.makeText(MainActivity.this,
                                 jsonObject.optString("message", "Version not found"),

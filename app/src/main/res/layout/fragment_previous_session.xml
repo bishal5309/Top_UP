@@ -369,37 +369,56 @@
             app:tint="?attr/customIconTint" />
     </FrameLayout>
 
-    <LinearLayout
+    <!-- ================= Empty State + RecyclerView ================= -->
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
-        android:orientation="vertical"
-        android:gravity="center">
+        android:layout_weight="1">
 
-        <ImageView
-            android:id="@+id/emptyIcon"
-            android:layout_width="64dp"
-            android:layout_height="64dp"
-            android:src="@drawable/ic_chart_zero"
-            android:layout_marginBottom="16dp"
-            app:tint="?attr/customIconTint" />
+        <!-- Empty State Layout -->
+        <LinearLayout
+            android:id="@+id/previousEmptyStateLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:padding="16dp"
+            android:visibility="visible">
 
-        <TextView
-            android:id="@+id/emptyTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="No transactions"
-            android:textColor="?attr/customTextColor"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:layout_marginBottom="8dp" />
+            <ImageView
+                android:id="@+id/emptyIcon"
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:src="@drawable/ic_chart_zero"
+                android:layout_marginBottom="16dp"
+                app:tint="?attr/customIconTint" />
 
-        <TextView
-            android:id="@+id/emptySubtitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Add EPOS transactions to see them"
-            android:textColor="?attr/customTextColor5"
-            android:textSize="14sp" />
-    </LinearLayout>
+            <TextView
+                android:id="@+id/emptyTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="No transactions"
+                android:textColor="?attr/customTextColor"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:layout_marginBottom="8dp" />
+
+            <TextView
+                android:id="@+id/emptySubtitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Add EPOS transactions to see them"
+                android:textColor="?attr/customTextColor5"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+        <!-- RecyclerView -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_marginTop="10dp"
+            android:id="@+id/previousTransactionRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"
+            android:clipToPadding="false"/>
+    </RelativeLayout>
 </LinearLayout>

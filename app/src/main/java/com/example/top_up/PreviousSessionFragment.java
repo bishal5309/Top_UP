@@ -12,6 +12,11 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class PreviousSessionFragment extends Fragment {
 
@@ -21,6 +26,13 @@ public class PreviousSessionFragment extends Fragment {
     // UI elements
     private TextView sessionStarted, sessionStartTimeDate, sessionEndedTimeDate;
     private TextView sessionIdValue, startBalanceValue, endedBalanceValue, depositValue, paidOutValue;
+    private LinearLayout balanceSection;
+
+    // RecyclerView elements
+    private RecyclerView previousTransactionRecyclerView;
+    private LinearLayout previousEmptyStateLayout;
+    private TransactionAdapter transactionAdapter;
+    private List<Transaction> previousTransactionList = new ArrayList<>();
 
     @Nullable
     @Override
@@ -36,7 +48,7 @@ public class PreviousSessionFragment extends Fragment {
 
         // Toggle button and balance section
         ImageView triangleToggle = view.findViewById(R.id.triangleToggle);
-        LinearLayout balanceSection = view.findViewById(R.id.balanceSection);
+        balanceSection = view.findViewById(R.id.balanceSection);
 
         // Initialize UI elements
         sessionStarted = view.findViewById(R.id.sessionStarted);
@@ -49,35 +61,30 @@ public class PreviousSessionFragment extends Fragment {
         paidOutValue = view.findViewById(R.id.paidOutValue);
         sessionBlock = view.findViewById(R.id.sessionBlock);
 
-        sessionBlock.setOnClickListener(view1 -> {
-            isExpanded = !isExpanded;
+        // RecyclerView & Empty state
+        previousTransactionRecyclerView = view.findViewById(R.id.previousTransactionRecyclerView);
+        previousEmptyStateLayout = view.findViewById(R.id.previousEmptyStateLayout);
 
-            // Rotate triangle icon
+        previousTransactionRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        transactionAdapter = new TransactionAdapter(previousTransactionList);
+        previousTransactionRecyclerView.setAdapter(transactionAdapter);
+
+        // Toggle listener
+        View.OnClickListener toggleListener = v -> {
+            isExpanded = !isExpanded;
             triangleToggle.animate()
                     .rotation(isExpanded ? 180f : 0f)
                     .setDuration(300)
                     .start();
-
-            // Show or hide balance section
             balanceSection.setVisibility(isExpanded ? View.VISIBLE : View.GONE);
-        });
+        };
 
-        // Toggle click listener
-        triangleToggle.setOnClickListener(v -> {
-            isExpanded = !isExpanded;
+        sessionBlock.setOnClickListener(toggleListener);
+        triangleToggle.setOnClickListener(toggleListener);
 
-            // Rotate triangle icon
-            triangleToggle.animate()
-                    .rotation(isExpanded ? 180f : 0f)
-                    .setDuration(300)
-                    .start();
-
-            // Show or hide balance section
-            balanceSection.setVisibility(isExpanded ? View.VISIBLE : View.GONE);
-        });
-
-        // Example: Load previous session data
+        // Load data
         loadPreviousSessionData();
+        loadPreviousTransactions();
     }
 
     private void loadPreviousSessionData() {
@@ -91,7 +98,6 @@ public class PreviousSessionFragment extends Fragment {
         String deposits = "300 ৳";
         String paidOut = "50 ৳";
 
-        // Set values to UI
         sessionStarted.setText(started);
         sessionStartTimeDate.setText(startTime);
         sessionEndedTimeDate.setText(endedTime);
@@ -100,5 +106,22 @@ public class PreviousSessionFragment extends Fragment {
         endedBalanceValue.setText(endedBalance);
         depositValue.setText(deposits);
         paidOutValue.setText(paidOut);
+    }
+
+    private void loadPreviousTransactions() {
+        // TODO: Replace with your database fetch
+        previousTransactionList.clear();
+
+
+
+        // Empty state check
+        if (previousTransactionList.isEmpty()) {
+            previousEmptyStateLayout.setVisibility(View.VISIBLE);
+            previousTransactionRecyclerView.setVisibility(View.GONE);
+        } else {
+            previousEmptyStateLayout.setVisibility(View.GONE);
+            previousTransactionRecyclerView.setVisibility(View.VISIBLE);
+            transactionAdapter.notifyDataSetChanged();
+        }
     }
 }

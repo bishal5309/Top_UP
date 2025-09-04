@@ -1,6 +1,7 @@
 package com.example.top_up;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -18,7 +20,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Locale;
 
 public class CurrentSessionFragment extends Fragment {
 
@@ -28,8 +33,10 @@ public class CurrentSessionFragment extends Fragment {
     private ArrayList<Transaction> transactionList = new ArrayList<>();
     private ImageView triangleToggle;
     private FrameLayout sessionBlock;
+    private TextView sessionTimeDate;
     private boolean isExpanded = false;
-
+    private Handler handler = new Handler();
+    private Runnable runnable;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -47,6 +54,9 @@ public class CurrentSessionFragment extends Fragment {
         balanceSection = view.findViewById(R.id.balanceSection);
         triangleToggle = view.findViewById(R.id.triangleToggle);
         sessionBlock = view.findViewById(R.id.sessionBlock);
+        sessionTimeDate = view.findViewById(R.id.sessionTimeDate);
+
+        startDateTimeUpdater(sessionTimeDate);
 
         transactionAdapter = new TransactionAdapter(transactionList);
         transactionRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -111,6 +121,29 @@ public class CurrentSessionFragment extends Fragment {
             }
         }, keys, values);
     }
+
+
+
+    private void startDateTimeUpdater(TextView sessionTimeDate) {
+        runnable = new Runnable() {
+            @Override
+            public void run() {
+                // Format সেট করা (15:50, 18.08.2025)
+                SimpleDateFormat sdf = new SimpleDateFormat("HH:mm, dd.MM.yyyy", Locale.getDefault());
+                String currentDateTime = sdf.format(new Date());
+
+                // TextView তে সেট করা
+                sessionTimeDate.setText(currentDateTime);
+
+                // প্রতি 1 সেকেন্ডে আবার আপডেট হবে
+                handler.postDelayed(this, 1000);
+            }
+        };
+
+        // Runnable শুরু করা
+        handler.post(runnable);
+    }
+
 
     private void updateUI() {
         if (transactionList.isEmpty()) {

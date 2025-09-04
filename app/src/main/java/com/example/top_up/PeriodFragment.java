@@ -13,6 +13,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Locale;
+
 public class PeriodFragment extends Fragment {
 
     private boolean isExpanded = false;
@@ -36,10 +40,13 @@ public class PeriodFragment extends Fragment {
 
         // Initialize UI elements
         selectedPeriod = view.findViewById(R.id.selectedPeriod);
-        selectedPeriodDate = view.findViewById(R.id.selectedPeriodDate);
+
         depositValue = view.findViewById(R.id.depositValue);
         paidOutValue = view.findViewById(R.id.paidOutValue);
         sessionBlock = view.findViewById(R.id.sessionBlock);
+
+        selectedPeriodDate = view.findViewById(R.id.selectedPeriodDate);
+        setOneMonthPeriod(selectedPeriodDate);
 
 
 
@@ -79,16 +86,37 @@ public class PeriodFragment extends Fragment {
         loadPeriodData();
     }
 
+    private void setOneMonthPeriod(TextView selectedPeriodDate) {
+        // আজকের তারিখ
+        Calendar startCal = Calendar.getInstance();
+        // মাসের 01 তারিখ সেট করা
+        startCal.set(Calendar.DAY_OF_MONTH, 1);
+
+        // ১ মাস পরে তারিখ নেওয়া
+        Calendar endCal = (Calendar) startCal.clone();
+        endCal.add(Calendar.MONTH, 1);
+
+        // Format সেট করা
+        SimpleDateFormat sdf = new SimpleDateFormat("dd MMMM yyyy", Locale.getDefault());
+
+        // দুই তারিখ format করা
+        String startDate = sdf.format(startCal.getTime());
+        String endDate = sdf.format(endCal.getTime());
+
+        // TextView তে বসানো
+        selectedPeriodDate.setText(startDate + " - " + endDate);
+    }
+
+
     private void loadPeriodData() {
         // Example/sample values
         String period = "Selected period";
         String periodDate = "01 August 2025 - 18 August 2025";
-        String deposits = "500 ৳";
-        String paidOut = "200 ৳";
+        String deposits = "0 ৳";
+        String paidOut = "0 ৳";
 
         // Set values to UI
         selectedPeriod.setText(period);
-        selectedPeriodDate.setText(periodDate);
         depositValue.setText(deposits);
         paidOutValue.setText(paidOut);
     }

@@ -2,6 +2,7 @@ package com.example.top_up;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.drawable.GradientDrawable;
 import android.util.Log;
 import android.view.Gravity;
@@ -117,46 +118,31 @@ public class AppNavigationController {
 
     private void setupDarkThemeSwitch() {
         navigationView.post(() -> {
-            View actionView = null;
-            SwitchCompat themeSwitch;
-
-            if (navigationView.getMenu().findItem(R.id.nav_dark) != null) {
-                actionView = navigationView.getMenu()
-                        .findItem(R.id.nav_dark)
-                        .getActionView();
-
-                if (actionView != null) {
-                    themeSwitch = actionView.findViewById(R.id.theme_switch);
-                } else {
-                    themeSwitch = null;
-                }
-            } else {
-                themeSwitch = null;
-            }
+            View actionView = navigationView.getMenu().findItem(R.id.nav_dark).getActionView();
+            SwitchCompat themeSwitch = actionView.findViewById(R.id.theme_switch);
 
             if (themeSwitch == null) {
                 Log.w("AppNavController", "theme_switch not found");
                 return;
             }
 
-            themeSwitch.setThumbTintList(ContextCompat.getColorStateList(activity, R.color.switch_thumb_color));
-            themeSwitch.setTrackTintList(ContextCompat.getColorStateList(activity, R.color.switch_track_color));
+            // ✅ NEW: SharedPreferences setup
+            SharedPreferences prefs = activity.getSharedPreferences("theme_prefs", Activity.MODE_PRIVATE);
 
-            themeSwitch.setChecked(AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES);
+            boolean isDark = prefs.getBoolean("is_dark_switch_on", false);
+            themeSwitch.setChecked(isDark);
+            AppCompatDelegate.setDefaultNightMode(isDark ?
+                    AppCompatDelegate.MODE_NIGHT_YES :
+                    AppCompatDelegate.MODE_NIGHT_NO
+            );
 
             themeSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
-                Log.d("AppNavController", "Switch toggled: " + isChecked);
-                if (isChecked) {
-                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-                } else {
-                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-                }
+                prefs.edit().putBoolean("is_dark_switch_on", isChecked).apply();
+                AppCompatDelegate.setDefaultNightMode(isChecked ?
+                        AppCompatDelegate.MODE_NIGHT_YES :
+                        AppCompatDelegate.MODE_NIGHT_NO
+                );
                 activity.recreate();
-            });
-
-            navigationView.getMenu().findItem(R.id.nav_dark).setOnMenuItemClickListener(item -> {
-                themeSwitch.toggle();
-                return true;
             });
         });
     }

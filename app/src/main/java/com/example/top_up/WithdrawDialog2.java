@@ -44,7 +44,7 @@ public class WithdrawDialog2 {
                 imm.hideSoftInputFromWindow(activity.getCurrentFocus().getWindowToken(), 0);
 
             dialog.dismiss();
-            Toast.makeText(activity, "Your withdraw address active in 72 hours", Toast.LENGTH_SHORT).show();
+            AlertNotification.show(activity, "Your withdraw address active in 72 hours");
         });
 
         dialog.show();
